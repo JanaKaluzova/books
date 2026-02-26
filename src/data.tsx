@@ -32,7 +32,7 @@ export const mockBooks: Book[] = [
     id: '3',
     title: 'Educated',
     author: 'Tara Westover',
-    coverUrl: 'https://covers.openlibrary.org/b/isbn/0399590504-L.jpg',
+    coverUrl: 'https://covers.openlibrary.org/b/isbn/0399590501-L.jpg',
     rating: 5,
     genre: 'Memoir',
     year: 2018,
