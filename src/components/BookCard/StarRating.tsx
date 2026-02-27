@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Star } from 'lucide-react'
+import { STAR_COLORS } from '../../styles'
 
 interface StarRatingProps {
   rating: number
@@ -16,8 +17,8 @@ export const StarRating: FC<StarRatingProps> = ({ rating, size = 'md' }) => {
           key={star}
           className={`${sizeClass} star-anim`}
           style={{ animationDelay: `${star * 60}ms` }}
-          fill={star <= rating ? '#D4A017' : 'none'}
-          stroke={star <= rating ? '#D4A017' : '#E0D8CC'}
+          fill={star <= rating ? STAR_COLORS.filled : 'none'}
+          stroke={star <= rating ? STAR_COLORS.filled : STAR_COLORS.empty}
           strokeWidth={1.5}
         />
       ))}

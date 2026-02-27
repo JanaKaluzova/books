@@ -1,23 +1,24 @@
 import { X } from 'lucide-react'
-import type { Book } from '../types'
-import { StarRating } from './BookCard/StarRating'
+import type { Book } from '../../types'
+import { StarRating } from '../BookCard/StarRating'
 import { FC } from 'react'
 import { MetaItem } from './MetaItem'
+import { MODAL_OVERLAY, MODAL_BACKDROP, MODAL_CLOSE_BUTTON } from '../../styles'
 
-interface BookModalProps {
+interface BookDetailModalProps {
   book: Book
   onClose: () => void
 }
 
-export const BookModal: FC<BookModalProps> = ({ book, onClose }) => {
+export const BookDetailModal: FC<BookDetailModalProps> = ({ book, onClose }) => {
   return (
     <div
       role="button"
       tabIndex={0}
-      className="overlay-anim fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className={MODAL_OVERLAY}
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      <div className={MODAL_BACKDROP} />
       <div
         role="dialog"
         aria-modal="true"
@@ -26,7 +27,7 @@ export const BookModal: FC<BookModalProps> = ({ book, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-text-secondary transition-colors hover:bg-black/20 hover:text-text-primary"
+          className={MODAL_CLOSE_BUTTON}
         >
           <X className="h-4 w-4" strokeWidth={2.5} />
         </button>

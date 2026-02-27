@@ -3,28 +3,47 @@ import { Header } from './components/Header/Header'
 import { SearchBar } from './components/SearchBar'
 import { mockBooks } from './data'
 import { BookList } from './components/BookList'
+import { AddBookModal } from './components/BookDetail/AddBookModal'
+import type { Book } from './types'
 
 function App() {
+  const [books, setBooks] = useState<Book[]>(mockBooks)
   const [search, setSearch] = useState('')
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
   const filteredBooks = useMemo(() => {
-    if (!search.trim()) return mockBooks
+    if (!search.trim()) return books
     const q = search.toLowerCase()
-    return mockBooks.filter(
+    return books.filter(
       (b) =>
         b.title.toLowerCase().includes(q) ||
         b.author.toLowerCase().includes(q) ||
         b.genre.toLowerCase().includes(q),
     )
-  }, [search])
+  }, [search, books])
+
+  const handleAddBook = (bookData: Omit<Book, 'id'>) => {
+    const newBook: Book = {
+      ...bookData,
+      id: crypto.randomUUID(),
+    }
+    setBooks((prev) => [newBook, ...prev])
+    setIsAddModalOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-surface-50 text-text-primary">
-      <Header />
+      <Header onAddBookClick={() => setIsAddModalOpen(true)} />
       <main className="mx-auto max-w-[1600px] px-8 py-10">
         <SearchBar value={search} onChange={setSearch} totalBooks={filteredBooks.length} />
         <BookList filteredBooks={filteredBooks} />
       </main>
+      {isAddModalOpen && (
+        <AddBookModal
+          onAdd={handleAddBook}
+          onClose={() => setIsAddModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
