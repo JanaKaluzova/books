@@ -31,6 +31,10 @@ function App() {
     setIsAddModalOpen(false)
   }
 
+  const handleCloseModal = () => {
+    setIsAddModalOpen(false)
+  }
+
   return (
     <div className="min-h-screen bg-surface-50 text-text-primary">
       <Header onAddBookClick={() => setIsAddModalOpen(true)} />
@@ -39,13 +43,11 @@ function App() {
         <BookList filteredBooks={filteredBooks} />
       </main>
       {isAddModalOpen && (
-        <AddBookModal
-          onAdd={handleAddBook}
-          onClose={() => setIsAddModalOpen(false)}
-        />
+        <AddBookModal onAdd={handleAddBook} open={isAddModalOpen} onClose={handleCloseModal} />
       )}
     </div>
   )
 }
 
 export default App
+

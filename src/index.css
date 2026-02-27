@@ -41,6 +41,16 @@
   }
 }
 
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -53,12 +63,32 @@
   }
 }
 
-.overlay-anim {
+@keyframes slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+}
+
+[data-radix-dialog-overlay][data-state="open"] {
   animation: fade-in 0.25s ease-out forwards;
 }
 
-.modal-anim {
+[data-radix-dialog-overlay][data-state="closed"] {
+  animation: fade-out 0.2s ease-in forwards;
+}
+
+.modal-anim[data-state="open"] {
   animation: slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-anim[data-state="closed"] {
+  animation: slide-down 0.2s ease-in forwards;
 }
 
 /* Scrollbar styling */

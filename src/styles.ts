@@ -5,9 +5,6 @@ export const STAR_COLORS = {
 } as const
 
 
-export const MODAL_OVERLAY =
-  'overlay-anim fixed inset-0 z-[100] flex items-center justify-center p-4'
-
 export const MODAL_BACKDROP = 'absolute inset-0 bg-black/40 backdrop-blur-sm'
 
 export const MODAL_CLOSE_BUTTON =
