@@ -24,7 +24,7 @@ export const RHFRating: FC<RHFRatingProps> = ({ name, label }) => {
             </label>
           )}
           <div className="pt-1">
-            <StarRating rating={field.value || 0} onChange={(value) => field.onChange(value)} />
+            <StarRating rating={field.value} onChange={(value) => field.onChange(value)} />
           </div>
         </div>
       )}

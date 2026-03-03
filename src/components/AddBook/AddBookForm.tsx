@@ -3,7 +3,7 @@ import type { Book } from '../../types'
 import { FC } from 'react'
 import { RHFTextField } from '../RHF/RHFTextField'
 import { RHFRating } from '../RHF/RHFRating'
-import { INPUT } from '../../styles'
+import { RHFTextArea } from '../RHF/RHFTextArea'
 
 type BookFormValues = Omit<Book, 'id'>
 
@@ -51,15 +51,7 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
             <RHFTextField name="dateRead" label="Date Read" placeholder="e.g. Jan 2024" />
           </div>
 
-          <div>
-            <label className="mb-1.5 block text-xs font-medium text-text-secondary">Description</label>
-            <textarea
-              rows={3}
-              placeholder="What is this book about?"
-              {...formMethods.register('description')}
-              className={`${INPUT} resize-none`}
-            />
-          </div>
+          <RHFTextArea name="description" label="Description" rows={3} placeholder="What is this book about?" />
         </div>
       </form>
     </FormProvider>
