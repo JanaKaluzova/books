@@ -19,7 +19,7 @@ export const RHFRating: FC<RHFRatingProps> = ({ name, label }) => {
       render={({ field }) => (
         <div>
           {label && (
-            <label className="mb-1.5 block text-xs font-medium text-text-secondary">
+            <label htmlFor={name} className="mb-1.5 block text-xs font-medium text-text-secondary">
               {label}
             </label>
           )}

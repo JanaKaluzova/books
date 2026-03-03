@@ -11,12 +11,13 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div>
         {label && (
-          <label className="mb-1.5 block text-xs font-medium text-text-secondary">
+          <label htmlFor={props.name} className="mb-1.5 block text-xs font-medium text-text-secondary">
             {label}
           </label>
         )}
         <textarea
           ref={ref}
+          id={props.name}
           className={`${INPUT} resize-none ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${className}`}
           {...props}
         />

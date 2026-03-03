@@ -12,7 +12,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <div>
         {label && (
-          <label className="mb-1.5 block text-xs font-medium text-text-secondary">
+          <label htmlFor={props.name} className="mb-1.5 block text-xs font-medium text-text-secondary">
             {label}
           </label>
         )}
@@ -24,6 +24,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           )}
           <input
             ref={ref}
+            id={props.name}
             className={`${INPUT} ${startAdornment ? 'pl-10' : ''} ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${className}`}
             {...props}
           />

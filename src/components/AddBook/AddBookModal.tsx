@@ -9,7 +9,6 @@ import {
 import { AddBookForm } from './AddBookForm'
 import { FormButtons } from './FormButtons'
 
-type BookFormValues = Omit<Book, 'id'>
 
 interface AddBookModalProps {
   open: boolean
@@ -19,10 +18,12 @@ interface AddBookModalProps {
 
 export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose }) => {
 
-  const onSubmit = (data: BookFormValues) => {
+  const onSubmit = (data: Record<string, unknown>) => {
     const newBook: Book = {
-      ...data,
+      ...(data as Omit<Book, 'id'>),
       id: crypto.randomUUID(),
+      year: Number(data.year),
+      pages: Number(data.pages),
     }
     onAdd(newBook)
     onClose()

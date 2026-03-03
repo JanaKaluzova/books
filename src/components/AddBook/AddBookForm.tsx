@@ -4,8 +4,21 @@ import { FC } from 'react'
 import { RHFTextField } from '../RHF/RHFTextField'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFTextArea } from '../RHF/RHFTextArea'
+import { RHFSelect } from '../RHF/RHFSelect'
+import { SelectOption } from '../ui/Select'
 
-type BookFormValues = Omit<Book, 'id'>
+const currentYear = new Date().getFullYear()
+
+const option = (value: string, label: string): SelectOption => ({ value, label })
+const yearOptions: SelectOption[] = Array.from({ length: currentYear - 1980 + 1 }, (_, i) => {
+  const year = currentYear - i
+  return option(String(year), String(year))
+})
+
+type BookFormValues = Omit<Book, 'id' | 'year' | 'pages'> & {
+  year: string
+  pages: string
+}
 
 interface AddBookFormProps {
   onSubmit: (values: BookFormValues) => void
@@ -18,8 +31,8 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
     coverUrl: '',
     rating: 0,
     genre: '',
-    year: 0,
-    pages: 0,
+    year: '',
+    pages: '',
     dateRead: '',
     description: '',
   }
@@ -42,7 +55,7 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
 
           <div className="grid grid-cols-3 gap-4">
             <RHFTextField name="genre" label="Genre *" placeholder="e.g. Sci-Fi" />
-            <RHFTextField name="year" label="Year *" placeholder="2024" type="number" />
+            <RHFSelect name="year" label="Year *" placeholder="Year" options={yearOptions} />
             <RHFTextField name="pages" label="Pages *" placeholder="300" type="number" />
           </div>
 
