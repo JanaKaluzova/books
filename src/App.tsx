@@ -3,7 +3,7 @@ import { Header } from './components/Header/Header'
 import { SearchBar } from './components/SearchBar'
 import { mockBooks } from './data'
 import { BookList } from './components/BookList'
-import { AddBookModal } from './components/BookDetail/AddBookModal'
+import { AddBookModal } from './components/AddBook/AddBookModal'
 import type { Book } from './types'
 
 function App() {
@@ -22,24 +22,23 @@ function App() {
     )
   }, [search, books])
 
-  const handleAddBook = (bookData: Omit<Book, 'id'>) => {
-    const newBook: Book = {
-      ...bookData,
-      id: crypto.randomUUID(),
-    }
+  const handleAddBook = (newBook: Book) => {
     setBooks((prev) => [newBook, ...prev])
-    setIsAddModalOpen(false)
   }
 
   const handleCloseModal = () => {
     setIsAddModalOpen(false)
   }
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+  }
+
   return (
     <div className="min-h-screen bg-surface-50 text-text-primary">
       <Header onAddBookClick={() => setIsAddModalOpen(true)} />
       <main className="mx-auto max-w-[1600px] px-8 py-10">
-        <SearchBar value={search} onChange={setSearch} totalBooks={filteredBooks.length} />
+        <SearchBar value={search} onChange={handleSearchChange} totalBooks={filteredBooks.length} />
         <BookList filteredBooks={filteredBooks} />
       </main>
       {isAddModalOpen && (

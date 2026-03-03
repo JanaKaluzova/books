@@ -1,21 +1,37 @@
-import { forwardRef, InputHTMLAttributes } from 'react'
+import { forwardRef, InputHTMLAttributes, ReactNode } from 'react'
 import { INPUT } from '../../styles'
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label?: string
+  startAdornment?: ReactNode
+  error?: boolean
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, className = '', ...props }, ref) => {
+  ({ label, startAdornment, error, className = '', ...props }, ref) => {
     return (
       <div>
-        <label className="mb-1.5 block text-xs font-medium text-text-secondary">
-          {label}
-        </label>
-        <input ref={ref} className={`${INPUT} ${className}`} {...props} />
+        {label && (
+          <label className="mb-1.5 block text-xs font-medium text-text-secondary">
+            {label}
+          </label>
+        )}
+        <div className="relative">
+          {startAdornment && (
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary">
+              {startAdornment}
+            </span>
+          )}
+          <input
+            ref={ref}
+            className={`${INPUT} ${startAdornment ? 'pl-10' : ''} ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${className}`}
+            {...props}
+          />
+        </div>
       </div>
     )
   }
 )
 
 TextField.displayName = 'TextField'
+

@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import { FC } from 'react'
+import { TextField } from './ui/TextField'
 
 interface SearchBarProps {
   value: string
@@ -16,15 +17,14 @@ export const SearchBar: FC<SearchBarProps> = ({ value, onChange, totalBooks }) =
           {totalBooks} book{totalBooks !== 1 ? 's' : ''} in your collection
         </p>
       </div>
-      <div className="relative w-full sm:w-[480px]">
-        <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary" strokeWidth={2} />
-        <input
-          type="text"
-          name='search'
+      <div className="w-full sm:w-[480px]">
+        <TextField
+          startAdornment={<Search className="h-4 w-4" strokeWidth={2} />}
           placeholder="Search by title, author, or genre…"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-xl border border-surface-200 bg-white py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder-text-muted outline-none transition-all duration-200 focus:border-accent-500/50 focus:ring-2 focus:ring-accent-500/15"
+          name="search"
+          className="bg-white focus:border-accent-500/50 focus:ring-accent-500/15"
         />
       </div>
     </div>
