@@ -6,7 +6,6 @@ import { BookCard2 } from "./BookCard/BookCard2"
 
 interface BookListProps {
   filteredBooks: Book[]
-
 }
 
 export const BookList: FC<BookListProps> = ({ filteredBooks }) => {

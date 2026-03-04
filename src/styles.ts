@@ -5,7 +5,7 @@ export const STAR_COLORS = {
 } as const
 
 
-export const MODAL_BACKDROP = 'absolute inset-0 bg-black/40 backdrop-blur-sm'
+export const MODAL_BACKDROP = 'absolute inset-0 bg-black/50'
 
 export const MODAL_CLOSE_BUTTON =
   'absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/5 text-text-secondary transition-colors hover:bg-black/10 hover:text-text-primary outline-none focus:ring-0'
