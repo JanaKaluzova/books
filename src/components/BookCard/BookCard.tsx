@@ -2,6 +2,7 @@
 import { FC } from 'react'
 import type { Book } from '../../types'
 import { StarRating } from './StarRating'
+import { BookCover } from './BookCover'
 
 interface BookCardProps {
   book: Book
@@ -11,11 +12,10 @@ export const BookCard: FC<BookCardProps> = ({ book }) => {
   return (
     <div className="group cursor-pointer rounded-2xl bg-white p-3 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2">
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface-200">
-        <img
+        <BookCover
           src={book.coverUrl}
           alt={`${book.title} cover`}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
+          className="h-full w-full transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="p-4 pb-3">

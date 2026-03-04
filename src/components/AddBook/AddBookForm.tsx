@@ -5,12 +5,14 @@ import { RHFTextField } from '../RHF/RHFTextField'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFSelect } from '../RHF/RHFSelect'
+import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
 import { SelectOption } from '../ui/Select'
+import { BookSearchResult } from '../../types'
 
 const currentYear = new Date().getFullYear()
 
 const option = (value: string, label: string): SelectOption => ({ value, label })
-const yearOptions: SelectOption[] = Array.from({ length: currentYear - 1980 + 1 }, (_, i) => {
+const yearOptions: SelectOption[] = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => {
   const year = currentYear - i
   return option(String(year), String(year))
 })
@@ -42,12 +44,21 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
     defaultValues: initialValues,
   })
 
+  const handleBookSelect = (result: BookSearchResult) => {
+    formMethods.setValue('author', result.author)
+    formMethods.setValue('coverUrl', result.coverUrl)
+    formMethods.setValue('genre', result.genre)
+    formMethods.setValue('year', result.year)
+    formMethods.setValue('pages', result.pages)
+    formMethods.setValue('description', result.description)
+  }
+
   return (
     <FormProvider {...formMethods}>
       <form id='bookForm' onSubmit={formMethods.handleSubmit(onSubmit)} className="flex flex-col overflow-y-auto px-6 py-5">
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <RHFTextField name="title" label="Title *" placeholder="Book title" />
+            <RHFAutocomplete name="title" label="Title *" placeholder="Search for a book…" onBookSelect={handleBookSelect} />
             <RHFTextField name="author" label="Author *" placeholder="Author name" />
           </div>
 

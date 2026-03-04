@@ -18,3 +18,13 @@ export interface NavItem {
   icon: ReactNode
   active: boolean
 }
+
+export interface BookSearchResult {
+  title: string
+  author: string
+  year: string
+  pages: string
+  genre: string
+  coverUrl: string
+  description: string
+}
