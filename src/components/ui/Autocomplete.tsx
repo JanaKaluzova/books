@@ -12,6 +12,7 @@ interface AutocompleteProps {
   results: BookSearchResult[]
   isLoading: boolean
   error?: boolean
+  errorMessage?: string
   onChange: (value: string) => void
   onSelect: (result: BookSearchResult) => void
 }
@@ -24,6 +25,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   results,
   isLoading,
   error,
+  errorMessage,
   onChange,
   onSelect,
 }) => {
@@ -32,7 +34,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const showDropdown = isOpen && (results.length > 0 || isLoading)
+  const showDropdown = isOpen && (value.trim().length >= 3 || results.length > 0 || isLoading || errorMessage)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -88,6 +90,39 @@ export const Autocomplete: FC<AutocompleteProps> = ({
     }
   }
 
+  const renderDropdownContent = () => {
+    if (errorMessage) {
+      return <li className="px-4 py-3 text-sm text-accent-500">{errorMessage}</li>
+    }
+
+    if (isLoading) {
+      return <li className="px-4 py-3 text-sm text-text-muted">Searching…</li>
+    }
+
+    if (value.trim().length >= 3 && results.length === 0) {
+      return <li className="px-4 py-3 text-sm text-text-muted">No results found</li>
+    }
+
+    return results.map((result, i) => (
+      <li
+        key={`${result.title}-${result.author}-${i}`}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => handleSelect(result)}
+        onMouseEnter={() => setActiveIndex(i)}
+        className={`cursor-pointer px-4 py-2.5 transition-colors ${i === activeIndex
+          ? 'bg-accent-500/10 text-accent-600'
+          : 'text-text-primary hover:bg-surface-50'
+          }`}
+      >
+        <p className="text-sm font-medium truncate">{result.title}</p>
+        <p className="text-xs text-text-secondary truncate">
+          {result.author}
+          {result.year && ` · ${result.year}`}
+        </p>
+      </li>
+    ))
+  }
+
   return (
     <div ref={containerRef} className="relative">
       {label && (
@@ -127,28 +162,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
           ref={listRef}
           className="absolute z-[200] mt-1 max-h-64 w-full overflow-auto rounded-xl border border-surface-200 bg-white shadow-xl"
         >
-          {isLoading && results.length === 0 ? (
-            <li className="px-4 py-3 text-sm text-text-muted">Searching…</li>
-          ) : (
-            results.map((result, i) => (
-              <li
-                key={`${result.title}-${result.author}-${i}`}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleSelect(result)}
-                onMouseEnter={() => setActiveIndex(i)}
-                className={`cursor-pointer px-4 py-2.5 transition-colors ${i === activeIndex
-                  ? 'bg-accent-50 text-accent-700'
-                  : 'text-text-primary hover:bg-surface-50'
-                  }`}
-              >
-                <p className="text-sm font-medium truncate">{result.title}</p>
-                <p className="text-xs text-text-secondary truncate">
-                  {result.author}
-                  {result.year && ` · ${result.year}`}
-                </p>
-              </li>
-            ))
-          )}
+          {renderDropdownContent()}
         </ul>
       )}
     </div>

@@ -25,7 +25,9 @@ export const RHFAutocomplete: FC<RHFAutocompleteProps> = ({
   } = useFormContext()
 
   const value = watch(name) ?? ''
-  const { data, isLoading } = useBookSearchQuery(value)
+  const { data, isLoading, isFetching, isDebouncing, error } = useBookSearchQuery(value)
+
+  const showLoading = (value.trim().length >= 3 && isDebouncing) || isLoading || isFetching
 
   return (
     <Controller
@@ -39,7 +41,8 @@ export const RHFAutocomplete: FC<RHFAutocompleteProps> = ({
           name={field.name}
           value={field.value}
           results={data ?? []}
-          isLoading={isLoading}
+          isLoading={showLoading}
+          errorMessage={error instanceof Error ? error.message : undefined}
           onChange={(val) => {
             field.onChange(val)
             clearErrors(name)

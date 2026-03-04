@@ -26,12 +26,18 @@ export const useBookSearchQuery = (query: string) => {
     enabled: trimmed.length >= 3,
   }
 
-  return useQuery({
+  const queryResult = useQuery({
     queryKey: getBookSearchQuery(params),
     queryFn: (context) => fetchBooks(context.queryKey[1]),
     enabled: params.enabled,
     staleTime: 5 * 60 * 1000,
+    retry: false,
   })
+
+  return {
+    ...queryResult,
+    isDebouncing: query !== debouncedQuery,
+  }
 }
 
 export const bookSearchQueryPrefix = 'bookSearch'

@@ -20,6 +20,10 @@ export async function searchBooks(
 
   const res = await fetch(`https://openlibrary.org/search.json?${params}`)
 
+  if (res.status === 422) {
+    throw new Error('Try a more specific search term')
+  }
+
   if (!res.ok) {
     throw new Error(`Open Library API error: ${res.status}`)
   }
