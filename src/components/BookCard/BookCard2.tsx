@@ -1,6 +1,6 @@
 
 import { FC } from 'react'
-import type { Book } from '../../types'
+import type { Book } from '../../utils/types'
 import { BookCover } from './BookCover'
 
 interface BookCardProps {

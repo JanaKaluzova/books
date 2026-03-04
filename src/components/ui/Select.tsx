@@ -22,6 +22,7 @@ export type SelectOption = {
 interface SelectProps {
   label?: string
   error?: boolean
+  errorMessage?: string
   options: SelectOption[]
   placeholder?: string
   value?: string
@@ -32,6 +33,7 @@ interface SelectProps {
 export const Select: FC<SelectProps> = ({
   label,
   error,
+  errorMessage,
   options,
   placeholder,
   value,
@@ -80,6 +82,9 @@ export const Select: FC<SelectProps> = ({
           </ScrollDownButton>
         </Content>
       </Root>
+      {errorMessage && (
+        <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
+      )}
     </div>
   )
 }

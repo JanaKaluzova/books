@@ -1,7 +1,12 @@
 import { Close as DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/Button'
+import { FC } from 'react'
 
-export const FormButtons = () => {
+interface FormButtonProps {
+  isEditing: boolean
+}
+
+export const FormButtons: FC<FormButtonProps> = ({ isEditing }) => {
   return (
     <div className="flex items-center justify-end gap-3 px-6 py-4">
       <DialogClose asChild>
@@ -10,7 +15,7 @@ export const FormButtons = () => {
         </Button>
       </DialogClose>
       <Button type="submit" form='bookForm'>
-        Add Book
+        {isEditing ? 'Update Book' : 'Add Book'}
       </Button>
     </div>
   )

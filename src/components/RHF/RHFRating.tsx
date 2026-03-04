@@ -9,7 +9,7 @@ interface RHFRatingProps {
 
 export const RHFRating: FC<RHFRatingProps> = ({ name, label }) => {
   const {
-    control,
+    control
   } = useFormContext()
 
   return (

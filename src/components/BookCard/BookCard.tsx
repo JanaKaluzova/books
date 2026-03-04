@@ -1,6 +1,6 @@
 
 import { FC } from 'react'
-import type { Book } from '../../types'
+import type { Book } from '../../utils/types'
 import { StarRating } from './StarRating'
 import { BookCover } from './BookCover'
 

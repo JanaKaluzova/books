@@ -1,31 +1,35 @@
 import { FC } from 'react'
 import { Root as DialogRoot, Portal as DialogPortal, Overlay as DialogOverlay, Content as DialogContent, Close as DialogClose, Title as DialogTitle, Description as DialogDescription } from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import { Book } from '../../types'
+import { Book } from '../../utils/types'
 import { Button } from '../ui/Button'
 import {
   MODAL_BACKDROP,
 } from '../../styles'
-import { AddBookForm } from './AddBookForm'
+import { AddBookForm, BookFormValues } from './AddBookForm'
 import { FormButtons } from './FormButtons'
 
 
 interface AddBookModalProps {
   open: boolean
+  book?: Book
   onAdd: (book: Book) => void
   onClose: () => void
 }
 
-export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose }) => {
-
-  const onSubmit = (data: Record<string, unknown>) => {
-    const newBook: Book = {
-      ...(data as Omit<Book, 'id'>),
-      id: crypto.randomUUID(),
+export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book }) => {
+  const onSubmit = (data: BookFormValues) => {
+    const saved: Book = {
+      ...data,
+      id: book?.id ?? crypto.randomUUID(),
       year: Number(data.year),
       pages: Number(data.pages),
+      coverUrl: data.coverUrl ?? '',
+      dateRead: data.dateRead ?? '',
+      description: data.description ?? '',
+      rating: data.rating ?? 0,
     }
-    onAdd(newBook)
+    onAdd(saved)
     onClose()
   }
 
@@ -43,15 +47,15 @@ export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose }) =>
 
             <div className="p-6 pb-0">
               <DialogTitle className="font-serif text-2xl font-bold text-text-primary">
-                Add a new book
+                {book ? 'Edit book' : 'Add a new book'}
               </DialogTitle>
               <DialogDescription className="mt-1 text-sm text-text-secondary">
-                Fill in the details of your latest read.
+                {book ? 'Update the details of your book.' : 'Fill in the details of your latest read.'}
               </DialogDescription>
             </div>
 
-            <AddBookForm onSubmit={onSubmit} />
-            <FormButtons />
+            <AddBookForm onSubmit={onSubmit} book={book} />
+            <FormButtons isEditing={!!book} />
           </DialogContent>
         </div>
       </DialogPortal>

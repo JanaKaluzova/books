@@ -1,4 +1,4 @@
-import type { Book, NavItem } from './types'
+import type { Book, NavItem } from './utils/types'
 import { BookOpen, Heart, BarChart3 } from 'lucide-react'
 
 export const mockBooks: Book[] = [

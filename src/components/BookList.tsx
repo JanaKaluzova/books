@@ -1,14 +1,16 @@
 import { FC, useState } from "react"
-import { Book } from "../types"
+import { Book } from "../utils/types"
 import { NoResults } from "./NoResults"
 import { BookDetailModal } from "./BookDetail/BookDetailModal"
 import { BookCard2 } from "./BookCard/BookCard2"
 
 interface BookListProps {
   filteredBooks: Book[]
+  onDeleteBook: (id: string) => void
+  onEditBook: (book: Book) => void
 }
 
-export const BookList: FC<BookListProps> = ({ filteredBooks }) => {
+export const BookList: FC<BookListProps> = ({ filteredBooks, onDeleteBook, onEditBook }) => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
   const handleSelectBook = (book: Book) => {
@@ -31,7 +33,13 @@ export const BookList: FC<BookListProps> = ({ filteredBooks }) => {
         </div>
       )}
       {selectedBook && (
-        <BookDetailModal book={selectedBook} open={!!selectedBook} onClose={handleCloseDetail} />
+        <BookDetailModal
+          book={selectedBook}
+          open={!!selectedBook}
+          onClose={handleCloseDetail}
+          onDelete={(id) => { onDeleteBook(id); handleCloseDetail() }}
+          onEdit={(book) => { onEditBook(book); handleCloseDetail() }}
+        />
       )}
     </>
   )

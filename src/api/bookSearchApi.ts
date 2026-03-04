@@ -1,4 +1,4 @@
-import { BookSearchResult } from "../types"
+import { BookSearchResult } from "../utils/types"
 
 interface OpenLibraryDoc {
   title?: string

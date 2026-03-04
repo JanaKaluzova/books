@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState, KeyboardEvent } from 'react'
 import { INPUT } from '../../styles'
-import { BookSearchResult } from '../../types'
+import { BookSearchResult } from '../../utils/types'
 import { Loader2 } from 'lucide-react'
 
 
@@ -12,6 +12,7 @@ interface AutocompleteProps {
   results: BookSearchResult[]
   isLoading: boolean
   error?: boolean
+  searchError?: string
   errorMessage?: string
   onChange: (value: string) => void
   onSelect: (result: BookSearchResult) => void
@@ -25,6 +26,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   results,
   isLoading,
   error,
+  searchError,
   errorMessage,
   onChange,
   onSelect,
@@ -34,7 +36,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const showDropdown = isOpen && (value.trim().length >= 3 || results.length > 0 || isLoading || errorMessage)
+  const showDropdown = isOpen && (value.trim().length >= 3 || results.length > 0 || isLoading || searchError)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -91,8 +93,8 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   }
 
   const renderDropdownContent = () => {
-    if (errorMessage) {
-      return <li className="px-4 py-3 text-sm text-accent-500">{errorMessage}</li>
+    if (searchError) {
+      return <li className="px-4 py-3 text-sm text-accent-500">{searchError}</li>
     }
 
     if (isLoading) {
@@ -164,6 +166,10 @@ export const Autocomplete: FC<AutocompleteProps> = ({
         >
           {renderDropdownContent()}
         </ul>
+      )}
+
+      {errorMessage && (
+        <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
       )}
     </div>
   )

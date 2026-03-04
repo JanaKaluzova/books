@@ -5,10 +5,11 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   startAdornment?: ReactNode
   error?: boolean
+  errorMessage?: string
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, startAdornment, error, className = '', ...props }, ref) => {
+  ({ label, startAdornment, error, errorMessage, className = '', ...props }, ref) => {
     return (
       <div>
         {label && (
@@ -29,6 +30,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             {...props}
           />
         </div>
+        {errorMessage && (
+          <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
+        )}
       </div>
     )
   }

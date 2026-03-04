@@ -1,47 +1,53 @@
 import { useForm, FormProvider } from 'react-hook-form'
-import type { Book } from '../../types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import type { Book } from '../../utils/types'
 import { FC } from 'react'
 import { RHFTextField } from '../RHF/RHFTextField'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFSelect } from '../RHF/RHFSelect'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
-import { SelectOption } from '../ui/Select'
-import { BookSearchResult } from '../../types'
+import { BookSearchResult } from '../../utils/types'
+import { useFormInitialValues } from '../../hooks/useFormInitialValues'
+import { yearOptions } from '../../utils/options'
+import { useFormValidation } from '../../hooks/useFormValidation'
 
-const currentYear = new Date().getFullYear()
-
-const option = (value: string, label: string): SelectOption => ({ value, label })
-const yearOptions: SelectOption[] = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => {
-  const year = currentYear - i
-  return option(String(year), String(year))
-})
-
-type BookFormValues = Omit<Book, 'id' | 'year' | 'pages'> & {
+export type BookFormValues = {
+  title: string
+  author: string
+  genre: string
   year: string
   pages: string
+  coverUrl?: string
+  dateRead?: string
+  description?: string
+  rating: number
+}
+
+const initialValues: BookFormValues = {
+  title: '',
+  author: '',
+  coverUrl: '',
+  rating: 0,
+  genre: '',
+  year: '',
+  pages: '',
+  dateRead: '',
+  description: '',
 }
 
 interface AddBookFormProps {
   onSubmit: (values: BookFormValues) => void
+  book?: Book
 }
 
-export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
-  const initialValues: BookFormValues = {
-    title: '',
-    author: '',
-    coverUrl: '',
-    rating: 0,
-    genre: '',
-    year: '',
-    pages: '',
-    dateRead: '',
-    description: '',
-  }
+export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
+  const zodSchema = useFormValidation()
 
   const formMethods = useForm<BookFormValues>({
     mode: 'onChange',
     defaultValues: initialValues,
+    resolver: zodResolver(zodSchema),
   })
 
   const handleBookSelect = (result: BookSearchResult) => {
@@ -52,6 +58,8 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
     formMethods.setValue('pages', result.pages)
     formMethods.setValue('description', result.description)
   }
+
+  useFormInitialValues(mapValues(book), formMethods.reset)
 
   return (
     <FormProvider {...formMethods}>
@@ -71,7 +79,7 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <RHFRating name="rating" label="Rating *" />
+            <RHFRating name="rating" label="Rating" />
             <RHFTextField name="dateRead" label="Date Read" placeholder="e.g. Jan 2024" />
           </div>
 
@@ -80,4 +88,20 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit }) => {
       </form>
     </FormProvider>
   )
+}
+
+const mapValues = (entity: Book | undefined): BookFormValues | undefined => {
+  if (!entity) return undefined
+
+  return {
+    author: entity.author,
+    coverUrl: entity.coverUrl ?? '',
+    genre: entity.genre,
+    year: String(entity.year),
+    pages: String(entity.pages),
+    dateRead: entity.dateRead ?? '',
+    description: entity.description ?? '',
+    title: entity.title,
+    rating: entity.rating,
+  }
 }

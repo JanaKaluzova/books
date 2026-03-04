@@ -28,3 +28,15 @@ export interface BookSearchResult {
   coverUrl: string
   description: string
 }
+
+export type BookFormValues = {
+  title: string
+  author: string
+  genre: string
+  year: string
+  pages: string
+  coverUrl?: string
+  dateRead?: string
+  description?: string
+  rating: number
+}

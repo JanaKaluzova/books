@@ -1,19 +1,22 @@
 import { FC } from 'react'
 import { Root as DialogRoot, Portal as DialogPortal, Overlay as DialogOverlay, Content as DialogContent, Close as DialogClose, Title as DialogTitle, Description as DialogDescription } from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import type { Book } from '../../types'
+import type { Book } from '../../utils/types'
 import { StarRating } from '../BookCard/StarRating'
 import { MetaItem } from './MetaItem'
 import { Button } from '../ui/Button'
 import { MODAL_BACKDROP } from '../../styles'
+import { BookDetailButtons } from './BookDetailButtons'
 
 interface BookDetailModalProps {
   book: Book
   open: boolean
   onClose: () => void
+  onDelete: (id: string) => void
+  onEdit: (book: Book) => void
 }
 
-export const BookDetailModal: FC<BookDetailModalProps> = ({ book, open, onClose }) => {
+export const BookDetailModal: FC<BookDetailModalProps> = ({ book, open, onClose, onDelete, onEdit }) => {
   return (
     <DialogRoot open={open} onOpenChange={onClose}>
       <DialogPortal>
@@ -59,6 +62,8 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({ book, open, onClose 
                 <MetaItem label="Date Read" value={book.dateRead} />
                 <MetaItem label="Rating" value={`${book.rating} / 5`} />
               </div>
+
+              <BookDetailButtons book={book} onEdit={onEdit} onDelete={onDelete} />
             </div>
           </DialogContent>
         </div>
