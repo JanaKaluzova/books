@@ -1,12 +1,12 @@
 import { FC } from 'react'
 import { Root as DialogRoot, Portal as DialogPortal, Overlay as DialogOverlay, Content as DialogContent, Close as DialogClose, Title as DialogTitle, Description as DialogDescription } from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import { Book } from '../../utils/types'
+import { Book, BookFormValues } from '../../utils/types'
 import { Button } from '../ui/Button'
 import {
   MODAL_BACKDROP,
 } from '../../styles'
-import { AddBookForm, BookFormValues } from './AddBookForm'
+import { AddBookForm } from './AddBookForm'
 import { FormButtons } from './FormButtons'
 
 

@@ -19,24 +19,12 @@ export interface NavItem {
   active: boolean
 }
 
-export interface BookSearchResult {
-  title: string
-  author: string
+export interface BookSearchResult extends Pick<Book, 'title' | 'author' | 'genre' | 'coverUrl' | 'description'> {
   year: string
   pages: string
-  genre: string
-  coverUrl: string
-  description: string
 }
 
-export type BookFormValues = {
-  title: string
-  author: string
-  genre: string
+export interface BookFormValues extends Pick<Book, 'title' | 'author' | 'genre' | 'rating'>, Partial<Pick<Book, 'coverUrl' | 'dateRead' | 'description'>> {
   year: string
   pages: string
-  coverUrl?: string
-  dateRead?: string
-  description?: string
-  rating: number
 }

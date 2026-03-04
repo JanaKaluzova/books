@@ -7,22 +7,10 @@ import { RHFRating } from '../RHF/RHFRating'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFSelect } from '../RHF/RHFSelect'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
-import { BookSearchResult } from '../../utils/types'
+import { BookSearchResult, BookFormValues } from '../../utils/types'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
 import { yearOptions } from '../../utils/options'
 import { useFormValidation } from '../../hooks/useFormValidation'
-
-export type BookFormValues = {
-  title: string
-  author: string
-  genre: string
-  year: string
-  pages: string
-  coverUrl?: string
-  dateRead?: string
-  description?: string
-  rating: number
-}
 
 const initialValues: BookFormValues = {
   title: '',
