@@ -6,12 +6,7 @@ import { mockBooks, mockWishlist } from './data'
 import { MyBooks } from './pages/MyBooks'
 import { Wishlist } from './pages/Wishlist'
 import { Path } from './utils/paths'
-import { type Book, Mode } from './utils/types'
-
-interface ModalState {
-  mode: Mode
-  book?: Book
-}
+import { type Book, type ModalState, Mode } from './utils/types'
 
 function App() {
   const location = useLocation()

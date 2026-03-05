@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { FC } from 'react'
+import { type FC, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
-import { useFormValidation } from '../../hooks/useFormValidation'
+import { bookFormSchema } from '../../hooks/useFormValidation'
 import { yearOptions } from '../../utils/options'
 import { type Book, type BookFormValues, type BookSearchResult, Mode } from '../../utils/types'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
@@ -32,12 +32,12 @@ interface AddBookFormProps {
 export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book, mode }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
 
-  const zodSchema = useFormValidation()
+  const resolver = useMemo(() => zodResolver(bookFormSchema), [])
 
   const formMethods = useForm<BookFormValues>({
     mode: 'onSubmit',
     defaultValues: initialValues,
-    resolver: zodResolver(zodSchema),
+    resolver,
   })
 
   const handleBookSelect = (result: BookSearchResult) => {

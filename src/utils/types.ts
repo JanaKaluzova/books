@@ -37,3 +37,8 @@ export enum Mode {
   MY_BOOKS = 'MY_BOOKS',
   WISHLIST = 'WISHLIST',
 }
+
+export interface ModalState {
+  mode: Mode
+  book?: Book
+}
