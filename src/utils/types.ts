@@ -1,4 +1,5 @@
-import { ReactNode } from "react"
+import type { ReactNode } from 'react'
+import type { Path } from './paths'
 
 export interface Book {
   id: string
@@ -16,15 +17,23 @@ export interface Book {
 export interface NavItem {
   label: string
   icon: ReactNode
-  active: boolean
+  path: Path
 }
 
-export interface BookSearchResult extends Pick<Book, 'title' | 'author' | 'genre' | 'coverUrl' | 'description'> {
+export interface BookSearchResult
+  extends Pick<Book, 'title' | 'author' | 'genre' | 'coverUrl' | 'description'> {
   year: string
   pages: string
 }
 
-export interface BookFormValues extends Pick<Book, 'title' | 'author' | 'genre' | 'rating'>, Partial<Pick<Book, 'coverUrl' | 'dateRead' | 'description'>> {
+export interface BookFormValues
+  extends Pick<Book, 'title' | 'author' | 'genre' | 'rating'>,
+    Partial<Pick<Book, 'coverUrl' | 'dateRead' | 'description'>> {
   year: string
   pages: string
+}
+
+export enum Mode {
+  MY_BOOKS = 'MY_BOOKS',
+  WISHLIST = 'WISHLIST',
 }

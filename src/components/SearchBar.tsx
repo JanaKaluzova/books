@@ -3,18 +3,20 @@ import type { FC } from 'react'
 import { TextField } from './ui/TextField'
 
 interface SearchBarProps {
+  title: string
+  countLabel: string
   value: string
   totalBooks: number
   onChange: (value: string) => void
 }
 
-export const SearchBar: FC<SearchBarProps> = ({ value, onChange, totalBooks }) => {
+export const SearchBar: FC<SearchBarProps> = ({ title, countLabel, value, onChange, totalBooks }) => {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 className="font-serif text-3xl font-bold text-text-primary">My Books</h1>
+        <h1 className="font-serif text-3xl font-bold text-text-primary">{title}</h1>
         <p className="mt-1 text-sm text-text-secondary">
-          {totalBooks} book{totalBooks !== 1 ? 's' : ''} in your collection
+          {totalBooks} book{totalBooks !== 1 ? 's' : ''} {countLabel}
         </p>
       </div>
       <div className="w-full sm:w-[480px]">

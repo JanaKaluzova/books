@@ -19,7 +19,7 @@ export const BookDetailButtons: FC<BookDetailButtonsProps> = ({ book, onEdit, on
   }
 
   return (
-    <div className="mt-6 flex gap-3">
+    <div className="mt-auto flex gap-3 justify-end pt-6">
       <button
         type="button"
         onClick={handleEdit}

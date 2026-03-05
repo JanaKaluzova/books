@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
 import { useFormValidation } from '../../hooks/useFormValidation'
 import { yearOptions } from '../../utils/options'
-import type { Book, BookFormValues, BookSearchResult } from '../../utils/types'
+import { type Book, type BookFormValues, type BookSearchResult, Mode } from '../../utils/types'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFSelect } from '../RHF/RHFSelect'
@@ -26,9 +26,12 @@ const initialValues: BookFormValues = {
 interface AddBookFormProps {
   onSubmit: (values: BookFormValues) => void
   book?: Book
+  mode: Mode
 }
 
-export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
+export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book, mode }) => {
+  const isNotWishlist = mode === Mode.MY_BOOKS
+
   const zodSchema = useFormValidation()
 
   const formMethods = useForm<BookFormValues>({
@@ -78,17 +81,21 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
             <RHFTextField name="pages" label="Pages *" placeholder="300" type="number" />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <RHFRating name="rating" label="Rating" />
-            <RHFTextField name="dateRead" label="Date Read" placeholder="e.g. Jan 2024" />
-          </div>
+          {isNotWishlist && (
+            <div className="grid grid-cols-2 gap-4">
+              <RHFRating name="rating" label="Rating" />
+              <RHFTextField name="dateRead" label="Date Read" placeholder="e.g. Jan 2024" />
+            </div>
+          )}
 
-          <RHFTextArea
-            name="description"
-            label="Description"
-            rows={3}
-            placeholder="What is this book about?"
-          />
+          {isNotWishlist && (
+            <RHFTextArea
+              name="description"
+              label="Description"
+              rows={3}
+              placeholder="What is this book about?"
+            />
+          )}
         </div>
       </form>
     </FormProvider>

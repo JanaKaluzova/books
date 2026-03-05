@@ -10,7 +10,7 @@ import {
 import { X } from 'lucide-react'
 import type { FC } from 'react'
 import { MODAL_BACKDROP } from '../../styles'
-import type { Book, BookFormValues } from '../../utils/types'
+import { type Book, type BookFormValues, Mode } from '../../utils/types'
 import { Button } from '../ui/Button'
 import { AddBookForm } from './AddBookForm'
 import { FormButtons } from './FormButtons'
@@ -18,11 +18,14 @@ import { FormButtons } from './FormButtons'
 interface AddBookModalProps {
   open: boolean
   book?: Book
+  mode: Mode
   onAdd: (book: Book) => void
   onClose: () => void
 }
 
-export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book }) => {
+export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book, mode }) => {
+  const isWishlist = mode === Mode.WISHLIST
+
   const onSubmit = (data: BookFormValues) => {
     const saved: Book = {
       ...data,
@@ -36,6 +39,16 @@ export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book
     }
     onAdd(saved)
     onClose()
+  }
+
+  const getBookTitle = () => {
+    if (book) return `Edit ${book.title}`
+    return isWishlist ? 'Add to wishlist' : 'Add a new book'
+  }
+
+  const getBookDescription = () => {
+    if (book) return 'Update the details of your book.'
+    return isWishlist ? 'Save a book you want to read.' : 'Fill in the details of your latest read.'
   }
 
   return (
@@ -52,16 +65,14 @@ export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book
 
             <div className="p-6 pb-0">
               <DialogTitle className="font-serif text-2xl font-bold text-text-primary">
-                {book ? 'Edit book' : 'Add a new book'}
+                {getBookTitle()}
               </DialogTitle>
               <DialogDescription className="mt-1 text-sm text-text-secondary">
-                {book
-                  ? 'Update the details of your book.'
-                  : 'Fill in the details of your latest read.'}
+                {getBookDescription()}
               </DialogDescription>
             </div>
 
-            <AddBookForm onSubmit={onSubmit} book={book} />
+            <AddBookForm onSubmit={onSubmit} book={book} mode={mode} />
             <FormButtons isEditing={!!book} />
           </DialogContent>
         </div>

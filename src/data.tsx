@@ -1,5 +1,6 @@
+import { BarChart3, BookOpen, Heart } from 'lucide-react'
+import { Path } from './utils/paths'
 import type { Book, NavItem } from './utils/types'
-import { BookOpen, Heart, BarChart3 } from 'lucide-react'
 
 export const mockBooks: Book[] = [
   {
@@ -160,9 +161,58 @@ export const mockBooks: Book[] = [
   },
 ]
 
-
 export const navItems: NavItem[] = [
-  { label: 'My Books', icon: <BookOpen className="h-4 w-4" strokeWidth={2} />, active: true },
-  { label: 'Wishlist', icon: <Heart className="h-4 w-4" strokeWidth={2} />, active: false },
-  { label: 'Statistics', icon: <BarChart3 className="h-4 w-4" strokeWidth={2} />, active: false },
+  {
+    label: 'My Books',
+    icon: <BookOpen className="h-4 w-4" strokeWidth={2} />,
+    path: Path.MY_BOOKS,
+  },
+  { label: 'Wishlist', icon: <Heart className="h-4 w-4" strokeWidth={2} />, path: Path.WISHLIST },
+  {
+    label: 'Statistics',
+    icon: <BarChart3 className="h-4 w-4" strokeWidth={2} />,
+    path: Path.STATISTICS,
+  },
+]
+
+export const mockWishlist: Book[] = [
+  {
+    id: 'w1',
+    title: 'The Name of the Wind',
+    author: 'Patrick Rothfuss',
+    coverUrl: 'https://covers.openlibrary.org/b/isbn/0756404746-L.jpg',
+    rating: 0,
+    genre: 'Fantasy',
+    year: 2007,
+    pages: 662,
+    dateRead: '',
+    description:
+      'A legendary figure from fantasy literature, Kvothe tells the story of his life from his humble beginnings as a young student to his years as a legendary musician and magician.',
+  },
+  {
+    id: 'w2',
+    title: 'The Brothers Karamazov',
+    author: 'Fyodor Dostoevsky',
+    coverUrl: 'https://covers.openlibrary.org/b/isbn/0374528373-L.jpg',
+    rating: 0,
+    genre: 'Classic Literature',
+    year: 1880,
+    pages: 796,
+    dateRead: '',
+    description:
+      "The culmination of Dostoyevsky's genius, and one of the supreme achievements in all of literature.",
+  },
+  {
+    id: 'w3',
+    title: 'Pachinko',
+    author: 'Min Jin Lee',
+    coverUrl: 'https://covers.openlibrary.org/b/isbn/1455563927-L.jpg',
+    rating: 0,
+    genre: 'Historical Fiction',
+    year: 2017,
+    pages: 485,
+    dateRead: '',
+    description:
+      'An epic saga of a Korean family that begins in occupied Korea with a forbidden love and the consequences that ripple down through the generations.',
+  },
 ]

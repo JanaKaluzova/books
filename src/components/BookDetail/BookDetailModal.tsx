@@ -10,7 +10,7 @@ import {
 import { X } from 'lucide-react'
 import type { FC } from 'react'
 import { MODAL_BACKDROP } from '../../styles'
-import type { Book } from '../../utils/types'
+import { type Book, Mode } from '../../utils/types'
 import { StarRating } from '../BookCard/StarRating'
 import { Button } from '../ui/Button'
 import { BookDetailButtons } from './BookDetailButtons'
@@ -19,6 +19,7 @@ import { MetaItem } from './MetaItem'
 interface BookDetailModalProps {
   book: Book
   open: boolean
+  mode: Mode
   onClose: () => void
   onDelete: (id: string) => void
   onEdit: (book: Book) => void
@@ -30,7 +31,10 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
   onClose,
   onDelete,
   onEdit,
+  mode,
 }) => {
+  const isNotWishlist = mode === Mode.MY_BOOKS
+
   return (
     <DialogRoot open={open} onOpenChange={onClose}>
       <DialogPortal>
@@ -52,8 +56,8 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-white/60" />
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 sm:p-8">
-              <span className="inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-accent-600">
+            <div className="flex flex-1 flex-col overflow-y-auto p-6 sm:p-8">
+              <span className="self-start rounded-full bg-accent-500/10 px-3 py-1 text-xs font-medium text-accent-600">
                 {book.genre}
               </span>
 
@@ -62,9 +66,11 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
               </DialogTitle>
               <p className="mt-1 text-text-secondary">by {book.author}</p>
 
-              <div className="mt-4">
-                <StarRating rating={book.rating} />
-              </div>
+              {isNotWishlist && (
+                <div className="mt-4">
+                  <StarRating rating={book.rating} />
+                </div>
+              )}
 
               <DialogDescription className="mt-5 text-sm leading-relaxed text-text-secondary">
                 {book.description}
@@ -73,8 +79,7 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <MetaItem label="Year Published" value={String(book.year)} />
                 <MetaItem label="Pages" value={String(book.pages)} />
-                <MetaItem label="Date Read" value={book.dateRead} />
-                <MetaItem label="Rating" value={`${book.rating} / 5`} />
+                {isNotWishlist && <MetaItem label="Date Read" value={book.dateRead} />}
               </div>
 
               <BookDetailButtons book={book} onEdit={onEdit} onDelete={onDelete} />
