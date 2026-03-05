@@ -1,5 +1,5 @@
-import { FC, useState } from 'react'
 import { Star } from 'lucide-react'
+import { type FC, useState } from 'react'
 import { STAR_COLORS } from '../../styles'
 
 interface StarRatingProps {

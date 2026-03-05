@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, ReactNode } from 'react'
+import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react'
 import { INPUT } from '../../styles'
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -13,7 +13,10 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <div>
         {label && (
-          <label htmlFor={props.name} className="mb-1.5 block text-xs font-medium text-text-secondary">
+          <label
+            htmlFor={props.name}
+            className="mb-1.5 block text-xs font-medium text-text-secondary"
+          >
             {label}
           </label>
         )}
@@ -30,13 +33,10 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             {...props}
           />
         </div>
-        {errorMessage && (
-          <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="mt-1 text-xs text-red-500">{errorMessage}</p>}
       </div>
     )
-  }
+  },
 )
 
 TextField.displayName = 'TextField'
-

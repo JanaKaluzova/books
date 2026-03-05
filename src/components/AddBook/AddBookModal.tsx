@@ -1,14 +1,19 @@
-import { FC } from 'react'
-import { Root as DialogRoot, Portal as DialogPortal, Overlay as DialogOverlay, Content as DialogContent, Close as DialogClose, Title as DialogTitle, Description as DialogDescription } from '@radix-ui/react-dialog'
-import { X } from 'lucide-react'
-import { Book, BookFormValues } from '../../utils/types'
-import { Button } from '../ui/Button'
 import {
-  MODAL_BACKDROP,
-} from '../../styles'
+  Close as DialogClose,
+  Content as DialogContent,
+  Description as DialogDescription,
+  Overlay as DialogOverlay,
+  Portal as DialogPortal,
+  Root as DialogRoot,
+  Title as DialogTitle,
+} from '@radix-ui/react-dialog'
+import { X } from 'lucide-react'
+import type { FC } from 'react'
+import { MODAL_BACKDROP } from '../../styles'
+import type { Book, BookFormValues } from '../../utils/types'
+import { Button } from '../ui/Button'
 import { AddBookForm } from './AddBookForm'
 import { FormButtons } from './FormButtons'
-
 
 interface AddBookModalProps {
   open: boolean
@@ -50,7 +55,9 @@ export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book
                 {book ? 'Edit book' : 'Add a new book'}
               </DialogTitle>
               <DialogDescription className="mt-1 text-sm text-text-secondary">
-                {book ? 'Update the details of your book.' : 'Fill in the details of your latest read.'}
+                {book
+                  ? 'Update the details of your book.'
+                  : 'Fill in the details of your latest read.'}
               </DialogDescription>
             </div>
 

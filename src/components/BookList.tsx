@@ -1,8 +1,8 @@
-import { FC, useState } from "react"
-import { Book } from "../utils/types"
-import { NoResults } from "./NoResults"
-import { BookDetailModal } from "./BookDetail/BookDetailModal"
-import { BookCard2 } from "./BookCard/BookCard2"
+import { type FC, useState } from 'react'
+import type { Book } from '../utils/types'
+import { BookCard2 } from './BookCard/BookCard2'
+import { BookDetailModal } from './BookDetail/BookDetailModal'
+import { NoResults } from './NoResults'
 
 interface BookListProps {
   filteredBooks: Book[]
@@ -37,8 +37,14 @@ export const BookList: FC<BookListProps> = ({ filteredBooks, onDeleteBook, onEdi
           book={selectedBook}
           open={!!selectedBook}
           onClose={handleCloseDetail}
-          onDelete={(id) => { onDeleteBook(id); handleCloseDetail() }}
-          onEdit={(book) => { onEditBook(book); handleCloseDetail() }}
+          onDelete={(id) => {
+            onDeleteBook(id)
+            handleCloseDetail()
+          }}
+          onEdit={(book) => {
+            onEditBook(book)
+            handleCloseDetail()
+          }}
         />
       )}
     </>

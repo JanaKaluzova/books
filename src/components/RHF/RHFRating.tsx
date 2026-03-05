@@ -1,6 +1,6 @@
+import type { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { StarRating } from '../BookCard/StarRating'
-import { FC } from 'react'
 
 interface RHFRatingProps {
   name: string
@@ -8,9 +8,7 @@ interface RHFRatingProps {
 }
 
 export const RHFRating: FC<RHFRatingProps> = ({ name, label }) => {
-  const {
-    control
-  } = useFormContext()
+  const { control } = useFormContext()
 
   return (
     <Controller

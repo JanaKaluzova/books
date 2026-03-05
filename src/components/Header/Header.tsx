@@ -1,8 +1,8 @@
-import { FC } from 'react'
-import { Logo } from './Logo'
+import type { FC } from 'react'
 import { navItems } from '../../data'
-import { Navigation } from './Navigation'
 import { AddNewBook } from './AddNewBook'
+import { Logo } from './Logo'
+import { Navigation } from './Navigation'
 
 interface HeaderProps {
   onAddBookClick: () => void

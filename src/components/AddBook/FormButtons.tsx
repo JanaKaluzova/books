@@ -1,6 +1,6 @@
 import { Close as DialogClose } from '@radix-ui/react-dialog'
+import type { FC } from 'react'
 import { Button } from '../ui/Button'
-import { FC } from 'react'
 
 interface FormButtonProps {
   isEditing: boolean
@@ -14,7 +14,7 @@ export const FormButtons: FC<FormButtonProps> = ({ isEditing }) => {
           Cancel
         </Button>
       </DialogClose>
-      <Button type="submit" form='bookForm'>
+      <Button type="submit" form="bookForm">
         {isEditing ? 'Update Book' : 'Add Book'}
       </Button>
     </div>

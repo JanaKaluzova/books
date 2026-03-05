@@ -1,6 +1,6 @@
+import type { FC, TextareaHTMLAttributes } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { TextArea } from '../ui/TextArea'
-import { FC, TextareaHTMLAttributes } from 'react'
 
 type RHFTextAreaProps = {
   name: string

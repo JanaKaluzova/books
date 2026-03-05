@@ -1,6 +1,6 @@
-import { Controller, useFormContext, RegisterOptions } from "react-hook-form"
-import { TextField } from "../ui/TextField"
-import { FC, InputHTMLAttributes, ReactNode } from "react"
+import type { FC, InputHTMLAttributes, ReactNode } from 'react'
+import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
+import { TextField } from '../ui/TextField'
 
 type RHFTextFieldProps = {
   name: string
@@ -9,11 +9,17 @@ type RHFTextFieldProps = {
   rules?: RegisterOptions
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'name'>
 
-export const RHFTextField: FC<RHFTextFieldProps> = ({ name, label, startAdornment, rules, ...rest }) => {
+export const RHFTextField: FC<RHFTextFieldProps> = ({
+  name,
+  label,
+  startAdornment,
+  rules,
+  ...rest
+}) => {
   const {
     control,
     formState: { errors },
-    clearErrors
+    clearErrors,
   } = useFormContext()
 
   const errorMessage = errors[name]?.message as string | undefined

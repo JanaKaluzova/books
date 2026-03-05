@@ -1,8 +1,7 @@
-
-import { FC } from 'react'
+import type { FC } from 'react'
 import type { Book } from '../../utils/types'
-import { StarRating } from './StarRating'
 import { BookCover } from './BookCover'
+import { StarRating } from './StarRating'
 
 interface BookCardProps {
   book: Book

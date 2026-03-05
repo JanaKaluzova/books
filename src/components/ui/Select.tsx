@@ -1,17 +1,17 @@
-import { FC } from 'react'
 import {
-  Root,
-  Trigger,
-  Value,
-  Icon,
   Content,
-  Viewport,
+  Icon,
   Item,
   ItemText,
-  ScrollUpButton,
+  Root,
   ScrollDownButton,
+  ScrollUpButton,
+  Trigger,
+  Value,
+  Viewport,
 } from '@radix-ui/react-select'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import type { FC } from 'react'
 import { INPUT } from '../../styles'
 
 export type SelectOption = {
@@ -82,9 +82,7 @@ export const Select: FC<SelectProps> = ({
           </ScrollDownButton>
         </Content>
       </Root>
-      {errorMessage && (
-        <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="mt-1 text-xs text-red-500">{errorMessage}</p>}
     </div>
   )
 }

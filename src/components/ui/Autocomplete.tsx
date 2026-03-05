@@ -1,8 +1,7 @@
-import { FC, useEffect, useRef, useState, KeyboardEvent } from 'react'
-import { INPUT } from '../../styles'
-import { BookSearchResult } from '../../utils/types'
 import { Loader2 } from 'lucide-react'
-
+import { type FC, type KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { INPUT } from '../../styles'
+import type { BookSearchResult } from '../../utils/types'
 
 interface AutocompleteProps {
   label: string
@@ -36,7 +35,8 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const showDropdown = isOpen && (value.trim().length >= 3 || results.length > 0 || isLoading || searchError)
+  const showDropdown =
+    isOpen && (value.trim().length >= 3 || results.length > 0 || isLoading || searchError)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -50,6 +50,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   }, [])
 
   // Reset active index when results change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: results is used as a trigger, not read in the body
   useEffect(() => {
     setActiveIndex(-1)
   }, [results])
@@ -106,21 +107,24 @@ export const Autocomplete: FC<AutocompleteProps> = ({
     }
 
     return results.map((result, i) => (
-      <li
-        key={`${result.title}-${result.author}-${i}`}
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => handleSelect(result)}
-        onMouseEnter={() => setActiveIndex(i)}
-        className={`cursor-pointer px-4 py-2.5 transition-colors ${i === activeIndex
-          ? 'bg-accent-500/10 text-accent-600'
-          : 'text-text-primary hover:bg-surface-50'
+      <li key={`${result.title}-${result.author}-${i}`}>
+        <button
+          type="button"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => handleSelect(result)}
+          onMouseEnter={() => setActiveIndex(i)}
+          className={`w-full text-left px-4 py-2.5 transition-colors ${
+            i === activeIndex
+              ? 'bg-accent-500/10 text-accent-600'
+              : 'text-text-primary hover:bg-surface-50'
           }`}
-      >
-        <p className="text-sm font-medium truncate">{result.title}</p>
-        <p className="text-xs text-text-secondary truncate">
-          {result.author}
-          {result.year && ` · ${result.year}`}
-        </p>
+        >
+          <p className="text-sm font-medium truncate">{result.title}</p>
+          <p className="text-xs text-text-secondary truncate">
+            {result.author}
+            {result.year && ` · ${result.year}`}
+          </p>
+        </button>
       </li>
     ))
   }
@@ -128,10 +132,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
   return (
     <div ref={containerRef} className="relative">
       {label && (
-        <label
-          htmlFor={name}
-          className="mb-1.5 block text-xs font-medium text-text-secondary"
-        >
+        <label htmlFor={name} className="mb-1.5 block text-xs font-medium text-text-secondary">
           {label}
         </label>
       )}
@@ -168,9 +169,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
         </ul>
       )}
 
-      {errorMessage && (
-        <p className="mt-1 text-xs text-red-500">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="mt-1 text-xs text-red-500">{errorMessage}</p>}
     </div>
   )
 }

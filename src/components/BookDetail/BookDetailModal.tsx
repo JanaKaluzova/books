@@ -1,12 +1,20 @@
-import { FC } from 'react'
-import { Root as DialogRoot, Portal as DialogPortal, Overlay as DialogOverlay, Content as DialogContent, Close as DialogClose, Title as DialogTitle, Description as DialogDescription } from '@radix-ui/react-dialog'
+import {
+  Close as DialogClose,
+  Content as DialogContent,
+  Description as DialogDescription,
+  Overlay as DialogOverlay,
+  Portal as DialogPortal,
+  Root as DialogRoot,
+  Title as DialogTitle,
+} from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
+import type { FC } from 'react'
+import { MODAL_BACKDROP } from '../../styles'
 import type { Book } from '../../utils/types'
 import { StarRating } from '../BookCard/StarRating'
-import { MetaItem } from './MetaItem'
 import { Button } from '../ui/Button'
-import { MODAL_BACKDROP } from '../../styles'
 import { BookDetailButtons } from './BookDetailButtons'
+import { MetaItem } from './MetaItem'
 
 interface BookDetailModalProps {
   book: Book
@@ -16,7 +24,13 @@ interface BookDetailModalProps {
   onEdit: (book: Book) => void
 }
 
-export const BookDetailModal: FC<BookDetailModalProps> = ({ book, open, onClose, onDelete, onEdit }) => {
+export const BookDetailModal: FC<BookDetailModalProps> = ({
+  book,
+  open,
+  onClose,
+  onDelete,
+  onEdit,
+}) => {
   return (
     <DialogRoot open={open} onOpenChange={onClose}>
       <DialogPortal>

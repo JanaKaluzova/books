@@ -1,7 +1,6 @@
-import { Controller, useFormContext, RegisterOptions } from 'react-hook-form'
-import { Select } from '../ui/Select'
-import { FC } from 'react'
-import { SelectOption } from '../ui/Select'
+import type { FC } from 'react'
+import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
+import { Select, type SelectOption } from '../ui/Select'
 
 type RHFSelectProps = {
   name: string

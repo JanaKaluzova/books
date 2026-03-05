@@ -1,8 +1,8 @@
-import { Controller, useFormContext, RegisterOptions } from 'react-hook-form'
-import { Autocomplete } from '../ui/Autocomplete'
-import { BookSearchResult } from '../../utils/types'
+import type { FC } from 'react'
+import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
 import { useBookSearchQuery } from '../../hooks/useBookSearch'
-import { FC } from 'react'
+import type { BookSearchResult } from '../../utils/types'
+import { Autocomplete } from '../ui/Autocomplete'
 
 interface RHFAutocompleteProps {
   name: string

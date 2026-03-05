@@ -1,5 +1,4 @@
-
-import { FC } from 'react'
+import type { FC } from 'react'
 import type { Book } from '../../utils/types'
 import { BookCover } from './BookCover'
 
@@ -10,7 +9,11 @@ interface BookCardProps {
 
 export const BookCard2: FC<BookCardProps> = ({ book, onSelectBook }) => {
   return (
-    <div onClick={() => onSelectBook(book)} className="group cursor-pointer rounded-2xl bg-white p-2 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2">
+    <button
+      type="button"
+      onClick={() => onSelectBook(book)}
+      className="group w-full text-left cursor-pointer rounded-2xl bg-white p-2 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2"
+    >
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface-200">
         <BookCover
           src={book.coverUrl}
@@ -33,6 +36,6 @@ export const BookCard2: FC<BookCardProps> = ({ book, onSelectBook }) => {
           </span>
         </div>
       </div>
-    </div>
+    </button>
   )
 }

@@ -1,5 +1,5 @@
-import { FC, ButtonHTMLAttributes } from 'react'
-import { BUTTON_PRIMARY, BUTTON_GHOST, MODAL_CLOSE_BUTTON } from '../../styles'
+import type { ButtonHTMLAttributes, FC } from 'react'
+import { BUTTON_GHOST, BUTTON_PRIMARY, MODAL_CLOSE_BUTTON } from '../../styles'
 
 const VARIANT_STYLES = {
   primary: BUTTON_PRIMARY,
@@ -11,7 +11,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: keyof typeof VARIANT_STYLES
 }
 
-export const Button: FC<ButtonProps> = ({ variant = 'primary', className = '', children, ...props }) => {
+export const Button: FC<ButtonProps> = ({
+  variant = 'primary',
+  className = '',
+  children,
+  ...props
+}) => {
   return (
     <button className={`${VARIANT_STYLES[variant]} ${className}`} {...props}>
       {children}

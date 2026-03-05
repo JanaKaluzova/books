@@ -1,4 +1,4 @@
-import { BookSearchResult } from "../utils/types"
+import type { BookSearchResult } from '../utils/types'
 
 interface OpenLibraryDoc {
   title?: string
@@ -9,9 +9,7 @@ interface OpenLibraryDoc {
   subject?: string[]
 }
 
-export async function searchBooks(
-  query: string,
-): Promise<BookSearchResult[]> {
+export async function searchBooks(query: string): Promise<BookSearchResult[]> {
   const params = new URLSearchParams({
     q: query,
     fields: 'title,author_name,first_publish_year,cover_i,number_of_pages_median,subject',
@@ -37,9 +35,7 @@ export async function searchBooks(
       year: doc.first_publish_year ? String(doc.first_publish_year) : '',
       pages: doc.number_of_pages_median ? String(doc.number_of_pages_median) : '',
       genre: doc.subject?.[0] ?? '',
-      coverUrl: doc.cover_i
-        ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-        : '',
+      coverUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : '',
       description: '',
     }),
   )

@@ -1,5 +1,5 @@
-import { FC } from 'react'
 import { Plus } from 'lucide-react'
+import type { FC } from 'react'
 import { Button } from '../ui/Button'
 
 interface AddNewBookProps {
@@ -8,13 +8,12 @@ interface AddNewBookProps {
 
 export const AddNewBook: FC<AddNewBookProps> = ({ onClick }) => {
   return (
-    <Button
-      onClick={onClick}
-      className="group flex items-center gap-2 hover:scale-[1.03]"
-    >
-      <Plus className="h-4 w-4 transition-transform duration-200 group-hover:rotate-90" strokeWidth={2.5} />
+    <Button onClick={onClick} className="group flex items-center gap-2 hover:scale-[1.03]">
+      <Plus
+        className="h-4 w-4 transition-transform duration-200 group-hover:rotate-90"
+        strokeWidth={2.5}
+      />
       Add Book
     </Button>
   )
 }
-

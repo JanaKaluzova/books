@@ -1,16 +1,15 @@
-import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Book } from '../../utils/types'
-import { FC } from 'react'
-import { RHFTextField } from '../RHF/RHFTextField'
-import { RHFRating } from '../RHF/RHFRating'
-import { RHFTextArea } from '../RHF/RHFTextArea'
-import { RHFSelect } from '../RHF/RHFSelect'
-import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
-import { BookSearchResult, BookFormValues } from '../../utils/types'
+import type { FC } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
-import { yearOptions } from '../../utils/options'
 import { useFormValidation } from '../../hooks/useFormValidation'
+import { yearOptions } from '../../utils/options'
+import type { Book, BookFormValues, BookSearchResult } from '../../utils/types'
+import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
+import { RHFRating } from '../RHF/RHFRating'
+import { RHFSelect } from '../RHF/RHFSelect'
+import { RHFTextArea } from '../RHF/RHFTextArea'
+import { RHFTextField } from '../RHF/RHFTextField'
 
 const initialValues: BookFormValues = {
   title: '',
@@ -33,7 +32,7 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
   const zodSchema = useFormValidation()
 
   const formMethods = useForm<BookFormValues>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues: initialValues,
     resolver: zodResolver(zodSchema),
   })
@@ -51,14 +50,27 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
 
   return (
     <FormProvider {...formMethods}>
-      <form id='bookForm' onSubmit={formMethods.handleSubmit(onSubmit)} className="flex flex-col overflow-y-auto px-6 py-5">
+      <form
+        id="bookForm"
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+        className="flex flex-col overflow-y-auto px-6 py-5"
+      >
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <RHFAutocomplete name="title" label="Title *" placeholder="Search for a book…" onBookSelect={handleBookSelect} />
+            <RHFAutocomplete
+              name="title"
+              label="Title *"
+              placeholder="Search for a book…"
+              onBookSelect={handleBookSelect}
+            />
             <RHFTextField name="author" label="Author *" placeholder="Author name" />
           </div>
 
-          <RHFTextField name="coverUrl" label="Cover URL" placeholder="https://example.com/cover.jpg" />
+          <RHFTextField
+            name="coverUrl"
+            label="Cover URL"
+            placeholder="https://example.com/cover.jpg"
+          />
 
           <div className="grid grid-cols-3 gap-4">
             <RHFTextField name="genre" label="Genre *" placeholder="e.g. Sci-Fi" />
@@ -71,7 +83,12 @@ export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book }) => {
             <RHFTextField name="dateRead" label="Date Read" placeholder="e.g. Jan 2024" />
           </div>
 
-          <RHFTextArea name="description" label="Description" rows={3} placeholder="What is this book about?" />
+          <RHFTextArea
+            name="description"
+            label="Description"
+            rows={3}
+            placeholder="What is this book about?"
+          />
         </div>
       </form>
     </FormProvider>
