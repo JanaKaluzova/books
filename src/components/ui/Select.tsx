@@ -1,17 +1,5 @@
-import {
-  Content,
-  Icon,
-  Item,
-  ItemText,
-  Root,
-  ScrollDownButton,
-  ScrollUpButton,
-  Trigger,
-  Value,
-  Viewport,
-} from '@radix-ui/react-select'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import type { FC } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { type FC, type KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { INPUT } from '../../styles'
 
 export type SelectOption = {
@@ -40,48 +28,117 @@ export const Select: FC<SelectProps> = ({
   name,
   onChange,
 }) => {
+  const [open, setOpen] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(-1)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+
+  const selectedLabel = options.find((o) => o.value === value)?.label
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  useEffect(() => {
+    if (activeIndex >= 0 && listRef.current) {
+      const item = listRef.current.children[activeIndex] as HTMLElement | undefined
+      item?.scrollIntoView({ block: 'nearest' })
+    }
+  }, [activeIndex])
+
+  const handleToggle = () => {
+    setOpen((prev) => !prev)
+    if (!open) setActiveIndex(options.findIndex((o) => o.value === value))
+  }
+
+  const handleSelect = (opt: SelectOption) => {
+    onChange?.(opt.value)
+    setOpen(false)
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!open) {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        setOpen(true)
+        setActiveIndex(options.findIndex((o) => o.value === value))
+      }
+      return
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setActiveIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0))
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1))
+        break
+      case 'Enter':
+      case ' ':
+        e.preventDefault()
+        if (activeIndex >= 0) handleSelect(options[activeIndex])
+        break
+      case 'Escape':
+        e.preventDefault()
+        setOpen(false)
+        break
+    }
+  }
+
   return (
-    <div>
+    <div ref={containerRef} className="relative">
       {label && (
         <label htmlFor={name} className="mb-1.5 block text-xs font-medium text-text-secondary">
           {label}
         </label>
       )}
-      <Root value={value} onValueChange={onChange} name={name}>
-        <Trigger
-          id={name}
-          className={`${INPUT} flex w-full items-center justify-between pr-3 text-left ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${!value ? 'text-text-muted' : ''}`}
+      <button
+        id={name}
+        type="button"
+        role="combobox"
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        className={`${INPUT} flex w-full items-center justify-between pr-3 text-left ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${!value ? 'text-text-muted' : ''}`}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+      >
+        <span>{selectedLabel ?? placeholder}</span>
+        <ChevronDown className="h-4 w-4 text-text-secondary" />
+      </button>
+
+      {open && (
+        <div
+          ref={listRef}
+          role="listbox"
+          className="absolute left-0 z-[200] mt-1 w-full max-h-[200px] overflow-y-auto rounded-xl border border-surface-200 bg-white p-1 shadow-xl"
         >
-          <Value placeholder={placeholder} />
-          <Icon>
-            <ChevronDown className="h-4 w-4 text-text-secondary" />
-          </Icon>
-        </Trigger>
-        <Content
-          className="z-[200] overflow-hidden rounded-xl border border-surface-200 bg-white shadow-xl min-w-[var(--radix-select-trigger-width)]"
-          position="popper"
-          sideOffset={4}
-          style={{ maxHeight: 'min(var(--radix-select-content-available-height), 240px)' }}
-        >
-          <ScrollUpButton className="flex items-center justify-center py-1 text-text-secondary">
-            <ChevronUp className="h-4 w-4" />
-          </ScrollUpButton>
-          <Viewport className="p-1">
-            {options.map((opt) => (
-              <Item
-                key={opt.value}
-                value={opt.value}
-                className="cursor-pointer rounded-lg px-3 py-2 text-sm text-text-primary outline-none data-[highlighted]:bg-surface-100 data-[state=checked]:font-medium data-[state=checked]:text-accent-600"
-              >
-                <ItemText>{opt.label}</ItemText>
-              </Item>
-            ))}
-          </Viewport>
-          <ScrollDownButton className="flex items-center justify-center py-1 text-text-secondary">
-            <ChevronDown className="h-4 w-4" />
-          </ScrollDownButton>
-        </Content>
-      </Root>
+          {options.map((opt, i) => (
+            <div
+              key={opt.value}
+              role="option"
+              tabIndex={-1}
+              aria-selected={opt.value === value}
+              className={`cursor-pointer rounded-lg px-3 py-2 text-sm text-text-primary ${i === activeIndex ? 'bg-surface-100' : ''} ${opt.value === value ? 'font-medium text-accent-600' : ''}`}
+              onMouseEnter={() => setActiveIndex(i)}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                handleSelect(opt)
+              }}
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
+
       {errorMessage && <p className="mt-1 text-xs text-red-500">{errorMessage}</p>}
     </div>
   )
