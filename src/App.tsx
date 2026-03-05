@@ -54,6 +54,11 @@ function App() {
     setModal({ mode: Mode.WISHLIST, book })
   }
 
+  const handleMoveToMyBooks = (book: Book) => {
+    setWishlist((prev) => prev.filter((b) => b.id !== book.id))
+    setBooks((prev) => [book, ...prev])
+  }
+
   return (
     <div className="min-h-screen bg-surface-50 text-text-primary">
       <Header onAddBookClick={handleAddBookClick} />
@@ -72,6 +77,7 @@ function App() {
                 books={wishlist}
                 onDeleteBook={handleDeleteWishlistBook}
                 onEditBook={handleEditWishlistBook}
+                onAlreadyRead={handleMoveToMyBooks}
               />
             }
           />

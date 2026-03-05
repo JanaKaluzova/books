@@ -1,15 +1,25 @@
-import { Pencil, Trash2 } from 'lucide-react'
+import { BookOpen, Pencil, Trash2 } from 'lucide-react'
 import type { FC } from 'react'
-import type { Book } from '../../utils/types'
+import { type Book, Mode } from '../../utils/types'
 import { ConfirmDialog } from '../ui/ConfirmDialog'
 
 interface BookDetailButtonsProps {
   book: Book
+  mode: Mode
   onEdit: (book: Book) => void
   onDelete: (id: string) => void
+  onAlreadyRead: (book: Book) => void
 }
 
-export const BookDetailButtons: FC<BookDetailButtonsProps> = ({ book, onEdit, onDelete }) => {
+export const BookDetailButtons: FC<BookDetailButtonsProps> = ({
+  book,
+  onEdit,
+  onDelete,
+  onAlreadyRead,
+  mode,
+}) => {
+  const isWishlist = mode === Mode.WISHLIST
+
   const handleEdit = () => {
     onEdit(book)
   }
@@ -20,6 +30,16 @@ export const BookDetailButtons: FC<BookDetailButtonsProps> = ({ book, onEdit, on
 
   return (
     <div className="mt-auto flex gap-3 justify-end pt-6">
+      {isWishlist && (
+        <button
+          type="button"
+          onClick={() => onAlreadyRead(book)}
+          className="mr-auto flex items-center gap-2 rounded-xl border border-green-200 px-4 py-2 text-sm font-medium text-green-600 transition-colors hover:bg-green-50 hover:text-green-700"
+        >
+          <BookOpen className="h-3.5 w-3.5" />
+          Mark as read
+        </button>
+      )}
       <button
         type="button"
         onClick={handleEdit}

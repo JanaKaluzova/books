@@ -9,9 +9,16 @@ interface BookListProps {
   mode: Mode
   onDeleteBook: (id: string) => void
   onEditBook: (book: Book) => void
+  onAlreadyRead?: (book: Book) => void
 }
 
-export const BookList: FC<BookListProps> = ({ filteredBooks, mode, onDeleteBook, onEditBook }) => {
+export const BookList: FC<BookListProps> = ({
+  filteredBooks,
+  mode,
+  onDeleteBook,
+  onEditBook,
+  onAlreadyRead,
+}) => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
   const handleSelectBook = (book: Book) => {
@@ -22,12 +29,27 @@ export const BookList: FC<BookListProps> = ({ filteredBooks, mode, onDeleteBook,
     setSelectedBook(null)
   }
 
+  const handleDeleteBook = (id: string) => {
+    onDeleteBook(id)
+    handleCloseDetail()
+  }
+
+  const handleEditBook = (book: Book) => {
+    onEditBook(book)
+    handleCloseDetail()
+  }
+
+  const handleAlreadyRead = (book: Book) => {
+    onAlreadyRead!(book)
+    handleCloseDetail()
+  }
+
   return (
     <>
       {filteredBooks.length === 0 && <NoResults />}
 
       {filteredBooks.length > 0 && (
-        <div className="mt-8 grid grid-cols-2 gap-2 lg:gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="mt-8 grid grid-cols-2 gap-2 lg:gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {filteredBooks.map((book) => (
             <BookCard2 book={book} key={book.id} onSelectBook={handleSelectBook} />
           ))}
@@ -39,14 +61,9 @@ export const BookList: FC<BookListProps> = ({ filteredBooks, mode, onDeleteBook,
           book={selectedBook}
           open={!!selectedBook}
           onClose={handleCloseDetail}
-          onDelete={(id) => {
-            onDeleteBook(id)
-            handleCloseDetail()
-          }}
-          onEdit={(book) => {
-            onEditBook(book)
-            handleCloseDetail()
-          }}
+          onDelete={handleDeleteBook}
+          onEdit={handleEditBook}
+          onAlreadyRead={handleAlreadyRead}
         />
       )}
     </>

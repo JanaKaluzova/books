@@ -7,9 +7,10 @@ interface WishlistProps {
   books: Book[]
   onDeleteBook: (id: string) => void
   onEditBook: (book: Book) => void
+  onAlreadyRead: (book: Book) => void
 }
 
-export const Wishlist: FC<WishlistProps> = ({ books, onDeleteBook, onEditBook }) => {
+export const Wishlist: FC<WishlistProps> = ({ books, onDeleteBook, onEditBook, onAlreadyRead }) => {
   const [search, setSearch] = useState('')
 
   const filteredBooks = useMemo(() => {
@@ -36,6 +37,7 @@ export const Wishlist: FC<WishlistProps> = ({ books, onDeleteBook, onEditBook })
         filteredBooks={filteredBooks}
         onDeleteBook={onDeleteBook}
         onEditBook={onEditBook}
+        onAlreadyRead={onAlreadyRead}
         mode={Mode.WISHLIST}
       />
     </>

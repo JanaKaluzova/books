@@ -12,9 +12,9 @@ export const BookCard2: FC<BookCardProps> = ({ book, onSelectBook }) => {
     <button
       type="button"
       onClick={() => onSelectBook(book)}
-      className="group w-full text-left cursor-pointer rounded-2xl bg-white p-2 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2"
+      className="group w-full text-left cursor-pointer rounded-2xl  shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2"
     >
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface-200">
+      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface-200 rounded-2xl ">
         <BookCover
           src={book.coverUrl}
           alt={`${book.title} cover`}

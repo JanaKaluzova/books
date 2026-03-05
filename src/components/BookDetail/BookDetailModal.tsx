@@ -23,6 +23,7 @@ interface BookDetailModalProps {
   onClose: () => void
   onDelete: (id: string) => void
   onEdit: (book: Book) => void
+  onAlreadyRead: (book: Book) => void
 }
 
 export const BookDetailModal: FC<BookDetailModalProps> = ({
@@ -31,6 +32,7 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
   onClose,
   onDelete,
   onEdit,
+  onAlreadyRead,
   mode,
 }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
@@ -82,7 +84,13 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
                 {isNotWishlist && <MetaItem label="Date Read" value={book.dateRead} />}
               </div>
 
-              <BookDetailButtons book={book} onEdit={onEdit} onDelete={onDelete} />
+              <BookDetailButtons
+                book={book}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onAlreadyRead={onAlreadyRead}
+                mode={mode}
+              />
             </div>
           </DialogContent>
         </div>
