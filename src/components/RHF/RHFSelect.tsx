@@ -1,16 +1,15 @@
 import type { FC } from 'react'
-import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { Select, type SelectOption } from '../ui/Select'
 
 type RHFSelectProps = {
   name: string
-  label?: string
+  label: string
   options: SelectOption[]
-  placeholder?: string
-  rules?: RegisterOptions
+  placeholder: string
 }
 
-export const RHFSelect: FC<RHFSelectProps> = ({ name, label, options, placeholder, rules }) => {
+export const RHFSelect: FC<RHFSelectProps> = ({ name, label, options, placeholder }) => {
   const {
     control,
     formState: { errors },
@@ -23,7 +22,6 @@ export const RHFSelect: FC<RHFSelectProps> = ({ name, label, options, placeholde
     <Controller
       control={control}
       name={name}
-      rules={rules}
       render={({ field }) => (
         <Select
           label={label}

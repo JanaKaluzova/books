@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { searchBooks } from '../api/bookSearchApi'
+import { useEffect, useState } from 'react'
+import { searchBooks } from '../../api/bookSearchApi'
 
 interface QueryParams {
   query: string
@@ -46,5 +46,3 @@ export const getBookSearchQuery = (params: QueryParams): [string, QueryParams] =
   bookSearchQueryPrefix,
   params,
 ]
-
-

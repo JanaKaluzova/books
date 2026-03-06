@@ -4,7 +4,7 @@ import { TextArea } from '../ui/TextArea'
 
 type RHFTextAreaProps = {
   name: string
-  label?: string
+  label: string
 } & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'name'>
 
 export const RHFTextArea: FC<RHFTextAreaProps> = ({ name, label, ...rest }) => {

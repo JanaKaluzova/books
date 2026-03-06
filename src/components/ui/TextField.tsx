@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react'
 import { INPUT } from '../../styles'
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string
+  label: string
   startAdornment?: ReactNode
   error?: boolean
   errorMessage?: string

@@ -1,21 +1,14 @@
 import type { FC, InputHTMLAttributes, ReactNode } from 'react'
-import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { TextField } from '../ui/TextField'
 
 type RHFTextFieldProps = {
   name: string
-  label?: string
+  label: string
   startAdornment?: ReactNode
-  rules?: RegisterOptions
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'name'>
 
-export const RHFTextField: FC<RHFTextFieldProps> = ({
-  name,
-  label,
-  startAdornment,
-  rules,
-  ...rest
-}) => {
+export const RHFTextField: FC<RHFTextFieldProps> = ({ name, label, startAdornment, ...rest }) => {
   const {
     control,
     formState: { errors },
@@ -28,7 +21,6 @@ export const RHFTextField: FC<RHFTextFieldProps> = ({
     <Controller
       control={control}
       name={name}
-      rules={rules}
       render={({ field }) => (
         <TextField
           label={label}

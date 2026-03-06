@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
-import { FieldValues, UseFormReset } from 'react-hook-form'
+import type { FieldValues, UseFormReset } from 'react-hook-form'
 
-export const useFormInitialValues = <T extends FieldValues>(initialValues: T | undefined, reset: UseFormReset<T>) => {
+export const useFormInitialValues = <T extends FieldValues>(
+  initialValues: T | undefined,
+  reset: UseFormReset<T>,
+) => {
   const firstInitial = useRef(false)
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 import { type FC, type KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { INPUT } from '../../styles'
+import { cn } from '../../utils/cn'
 
 export type SelectOption = {
   value: string
@@ -8,14 +9,14 @@ export type SelectOption = {
 }
 
 interface SelectProps {
-  label?: string
+  label: string
   error?: boolean
   errorMessage?: string
   options: SelectOption[]
-  placeholder?: string
+  placeholder: string
   value?: string
-  name?: string
-  onChange?: (value: string) => void
+  name: string
+  onChange: (value: string) => void
 }
 
 export const Select: FC<SelectProps> = ({
@@ -106,11 +107,11 @@ export const Select: FC<SelectProps> = ({
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
-        className={`${INPUT} flex w-full items-center justify-between pr-3 text-left ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${!value ? 'text-text-muted' : ''}`}
+        className={cn(INPUT, 'flex w-full items-center justify-between pr-3 text-left', error && 'border-red-400 focus:border-red-400 focus:ring-red-400/20')}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
       >
-        <span>{selectedLabel ?? placeholder}</span>
+        <span className={!value ? 'text-text-muted' : ''}>{selectedLabel ?? placeholder}</span>
         <ChevronDown className="h-4 w-4 text-text-secondary" />
       </button>
 

@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Controller, type RegisterOptions, useFormContext } from 'react-hook-form'
-import { useBookSearchQuery } from '../../hooks/useBookSearch'
+import { useBookSearchQuery } from '../../services/queries/useBookSearchQuery'
 import type { BookSearchResult } from '../../utils/types'
 import { Autocomplete } from '../ui/Autocomplete'
 

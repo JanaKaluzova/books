@@ -2,7 +2,7 @@ import { forwardRef, type TextareaHTMLAttributes } from 'react'
 import { INPUT } from '../../styles'
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string
+  label: string
   error?: boolean
 }
 
