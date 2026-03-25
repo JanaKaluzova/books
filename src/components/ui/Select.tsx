@@ -107,7 +107,11 @@ export const Select: FC<SelectProps> = ({
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
-        className={cn(INPUT, 'flex w-full items-center justify-between pr-3 text-left', error && 'border-red-400 focus:border-red-400 focus:ring-red-400/20')}
+        className={cn(
+          INPUT,
+          'flex w-full items-center justify-between pr-3 text-left',
+          error && 'border-red-400 focus:border-red-400 focus:ring-red-400/20',
+        )}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
       >

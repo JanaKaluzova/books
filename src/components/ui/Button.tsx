@@ -1,8 +1,9 @@
 import type { ButtonHTMLAttributes, FC } from 'react'
-import { BUTTON_GHOST, BUTTON_PRIMARY, MODAL_CLOSE_BUTTON } from '../../styles'
+import { BUTTON_GHOST, BUTTON_MOBILE, BUTTON_PRIMARY, MODAL_CLOSE_BUTTON } from '../../styles'
 
 const VARIANT_STYLES = {
   primary: BUTTON_PRIMARY,
+  mobile: BUTTON_MOBILE,
   ghost: BUTTON_GHOST,
   icon: MODAL_CLOSE_BUTTON,
 } as const
