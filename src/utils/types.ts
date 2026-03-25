@@ -33,6 +33,10 @@ export interface BookFormValues
   pages: string
 }
 
+export interface BookUpdates extends Partial<Omit<Book, 'id'>> {
+  isWishlist?: boolean
+}
+
 export enum Mode {
   MY_BOOKS = 'MY_BOOKS',
   WISHLIST = 'WISHLIST',
