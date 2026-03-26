@@ -1,27 +1,35 @@
-import { type FC, useMemo, useState } from 'react'
-import { BookList } from '../components/BookList'
-import { SearchBar } from '../components/SearchBar'
-import { type Book, Mode } from '../utils/types'
+import { useQueryClient } from '@tanstack/react-query'
+import { useMemo, useState } from 'react'
+import { BookList } from '../components/BookList/BookList'
+import { SearchBar } from '../components/SearchBar/SearchBar'
+import { useDeleteBookMutation } from '../services/mutations/useDeleteBookMutation'
+import { booksQueryKey, useBooksQuery } from '../services/queries/useBooksQuery'
+import { Mode } from '../utils/types'
 
-interface MyBooksProps {
-  books: Book[]
-  onDeleteBook: (id: string) => void
-  onEditBook: (book: Book) => void
-}
-
-export const MyBooks: FC<MyBooksProps> = ({ books, onDeleteBook, onEditBook }) => {
+export const MyBooks = () => {
   const [search, setSearch] = useState('')
+
+  const queryClient = useQueryClient()
+
+  const { data: books } = useBooksQuery()
+  const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
 
   const filteredBooks = useMemo(() => {
     if (!search.trim()) return books
     const q = search.toLowerCase()
-    return books.filter(
+    return books?.filter(
       (b) =>
         b.title.toLowerCase().includes(q) ||
         b.author.toLowerCase().includes(q) ||
         b.genre.toLowerCase().includes(q),
     )
   }, [search, books])
+
+  const handleDeleteBook = (id: string) => {
+    deleteBook(id, {
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: booksQueryKey }),
+    })
+  }
 
   return (
     <>
@@ -30,13 +38,14 @@ export const MyBooks: FC<MyBooksProps> = ({ books, onDeleteBook, onEditBook }) =
         countLabel="in your collection"
         value={search}
         onChange={setSearch}
-        totalBooks={filteredBooks.length}
+        totalBooks={filteredBooks?.length ?? 0}
       />
       <BookList
-        filteredBooks={filteredBooks}
-        onDeleteBook={onDeleteBook}
-        onEditBook={onEditBook}
+        filteredBooks={filteredBooks ?? []}
+        onDeleteBook={handleDeleteBook}
         mode={Mode.MY_BOOKS}
+        isDeleting={isDeletingBook}
+        isMovingBook={false}
       />
     </>
   )

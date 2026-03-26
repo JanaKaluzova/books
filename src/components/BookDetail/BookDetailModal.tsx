@@ -20,9 +20,10 @@ interface BookDetailModalProps {
   book: Book
   open: boolean
   mode: Mode
+  isDeleting: boolean
+  isMovingBook: boolean
   onClose: () => void
   onDelete: (id: string) => void
-  onEdit: (book: Book) => void
   onAlreadyRead: (book: Book) => void
 }
 
@@ -31,9 +32,10 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
   open,
   onClose,
   onDelete,
-  onEdit,
   onAlreadyRead,
   mode,
+  isDeleting,
+  isMovingBook,
 }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
 
@@ -86,10 +88,12 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
 
               <BookDetailButtons
                 book={book}
-                onEdit={onEdit}
                 onDelete={onDelete}
                 onAlreadyRead={onAlreadyRead}
+                onClose={onClose}
                 mode={mode}
+                isDeleting={isDeleting}
+                isMovingBook={isMovingBook}
               />
             </div>
           </DialogContent>

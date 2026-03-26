@@ -24,13 +24,13 @@ const initialValues: BookFormValues = {
   description: '',
 }
 
-interface AddBookFormProps {
+interface BookFormProps {
   onSubmit: (values: BookFormValues) => void
   book?: Book
   mode: Mode
 }
 
-export const AddBookForm: FC<AddBookFormProps> = ({ onSubmit, book, mode }) => {
+export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
 
   const resolver = useMemo(() => zodResolver(bookFormSchema), [])

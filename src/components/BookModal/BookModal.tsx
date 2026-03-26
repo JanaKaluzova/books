@@ -12,18 +12,19 @@ import type { FC } from 'react'
 import { MODAL_BACKDROP } from '../../styles'
 import { type Book, type BookFormValues, Mode } from '../../utils/types'
 import { Button } from '../ui/Button'
-import { AddBookForm } from './AddBookForm'
+import { BookForm } from './BookForm'
 import { FormButtons } from './FormButtons'
 
-interface AddBookModalProps {
+interface BookModalProps {
   open: boolean
   book?: Book
   mode: Mode
+  isPending: boolean
   onAdd: (book: Book) => void
   onClose: () => void
 }
 
-export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book, mode }) => {
+export const BookModal: FC<BookModalProps> = ({ onAdd, open, onClose, book, mode, isPending }) => {
   const isWishlist = mode === Mode.WISHLIST
 
   const onSubmit = (data: BookFormValues) => {
@@ -72,8 +73,8 @@ export const AddBookModal: FC<AddBookModalProps> = ({ onAdd, open, onClose, book
               </DialogDescription>
             </div>
 
-            <AddBookForm onSubmit={onSubmit} book={book} mode={mode} />
-            <FormButtons isEditing={!!book} />
+            <BookForm onSubmit={onSubmit} book={book} mode={mode} />
+            <FormButtons isEditing={!!book} isPending={isPending} />
           </DialogContent>
         </div>
       </DialogPortal>

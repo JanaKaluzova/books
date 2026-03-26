@@ -1,27 +1,34 @@
-import { BookOpen, Pencil, Trash2 } from 'lucide-react'
+import { BookOpen, Loader2, Pencil, Trash2 } from 'lucide-react'
 import type { FC } from 'react'
+import { useBookModal } from '../../context/BookModalContext'
 import { type Book, Mode } from '../../utils/types'
 import { ConfirmDialog } from '../ui/ConfirmDialog'
 
 interface BookDetailButtonsProps {
   book: Book
   mode: Mode
-  onEdit: (book: Book) => void
+  isDeleting: boolean
+  isMovingBook: boolean
+  onClose: () => void
   onDelete: (id: string) => void
   onAlreadyRead: (book: Book) => void
 }
 
 export const BookDetailButtons: FC<BookDetailButtonsProps> = ({
   book,
-  onEdit,
   onDelete,
   onAlreadyRead,
+  onClose,
   mode,
+  isDeleting,
+  isMovingBook,
 }) => {
+  const { openEditModal } = useBookModal()
   const isWishlist = mode === Mode.WISHLIST
 
   const handleEdit = () => {
-    onEdit(book)
+    openEditModal(book, mode)
+    onClose()
   }
 
   const handleDelete = () => {
@@ -34,9 +41,14 @@ export const BookDetailButtons: FC<BookDetailButtonsProps> = ({
         <button
           type="button"
           onClick={() => onAlreadyRead(book)}
-          className="mr-auto flex items-center gap-2 rounded-xl border border-green-200 px-4 py-2 text-sm font-medium text-green-600 transition-colors hover:bg-green-50 hover:text-green-700"
+          disabled={isMovingBook}
+          className="mr-auto flex items-center gap-2 rounded-xl border border-green-200 px-4 py-2 text-sm font-medium text-green-600 transition-colors hover:bg-green-50 hover:text-green-700 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          <BookOpen className="h-3.5 w-3.5" />
+          {isMovingBook ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <BookOpen className="h-3.5 w-3.5" />
+          )}
           Mark as read
         </button>
       )}
@@ -52,9 +64,14 @@ export const BookDetailButtons: FC<BookDetailButtonsProps> = ({
         trigger={
           <button
             type="button"
-            className="flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-50 hover:text-red-500"
+            disabled={isDeleting}
+            className="flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            {isDeleting ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="h-3.5 w-3.5" />
+            )}
             Delete
           </button>
         }

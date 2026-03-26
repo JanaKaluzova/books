@@ -10,7 +10,13 @@ interface SearchBarProps {
   onChange: (value: string) => void
 }
 
-export const SearchBar: FC<SearchBarProps> = ({ title, countLabel, value, onChange, totalBooks }) => {
+export const SearchBar: FC<SearchBarProps> = ({
+  title,
+  countLabel,
+  value,
+  onChange,
+  totalBooks,
+}) => {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -21,6 +27,7 @@ export const SearchBar: FC<SearchBarProps> = ({ title, countLabel, value, onChan
       </div>
       <div className="w-full sm:w-[480px]">
         <TextField
+          label=""
           startAdornment={<Search className="h-4 w-4" strokeWidth={2} />}
           placeholder="Search by title, author, or genre…"
           value={value}
