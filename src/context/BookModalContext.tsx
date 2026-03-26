@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { createContext, useContext, useState, type FC, type ReactNode } from 'react'
+import { useSnackbar } from 'notistack'
+import { createContext, type FC, type ReactNode, useContext, useState } from 'react'
 import { BookModal } from '../components/BookModal/BookModal'
 import { useCreateBookMutation } from '../services/mutations/useCreateBookMutation'
 import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
@@ -21,6 +22,7 @@ export const useBookModal = () => {
 
 export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = useQueryClient()
+  const { enqueueSnackbar } = useSnackbar()
   const [modal, setModal] = useState<ModalState | null>(null)
 
   const { mutate: createBook, isPending: isCreating } = useCreateBookMutation()
@@ -35,24 +37,31 @@ export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => 
       updateBook(
         { id: modal.book.id, updates: book },
         {
-          onSuccess: () =>
+          onSuccess: () => {
             queryClient.invalidateQueries({
               queryKey: isWishlist ? wishlistQueryKey : booksQueryKey,
-            }),
+            })
+            enqueueSnackbar('Book updated successfully', { variant: 'success' })
+            setModal(null)
+          },
+          onError: () => enqueueSnackbar('Failed to update book', { variant: 'error' }),
         },
       )
     } else {
       createBook(
         { book, isWishlist },
         {
-          onSuccess: () =>
+          onSuccess: () => {
             queryClient.invalidateQueries({
               queryKey: isWishlist ? wishlistQueryKey : booksQueryKey,
-            }),
+            })
+            enqueueSnackbar('Book added successfully', { variant: 'success' })
+            setModal(null)
+          },
+          onError: () => enqueueSnackbar('Failed to add book', { variant: 'error' }),
         },
       )
     }
-    setModal(null)
   }
 
   return (

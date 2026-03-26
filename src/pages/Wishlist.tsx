@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
@@ -15,6 +16,7 @@ export const Wishlist = () => {
   const [search, setSearch] = useState('')
 
   const queryClient = useQueryClient()
+  const { enqueueSnackbar } = useSnackbar()
 
   const { data: wishlist } = useWishlistQuery()
   const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
@@ -33,7 +35,11 @@ export const Wishlist = () => {
 
   const handleDeleteWishlistBook = (id: string) => {
     deleteBook(id, {
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: wishlistQueryKey }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: wishlistQueryKey })
+        enqueueSnackbar('Book deleted successfully', { variant: 'success' })
+      },
+      onError: () => enqueueSnackbar('Failed to delete book', { variant: 'error' }),
     })
   }
 
