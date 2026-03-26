@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+        <SnackbarProvider maxSnack={3} autoHideDuration={1500} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
           <App />
         </SnackbarProvider>
       </QueryClientProvider>

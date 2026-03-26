@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { type FC, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
+import { MONTHS } from '../../utils/const'
 import { bookFormSchema } from '../../utils/formValidation'
 import { yearOptions } from '../../utils/options'
 import { type Book, type BookFormValues, type BookSearchResult, Mode } from '../../utils/types'
@@ -12,6 +13,9 @@ import { RHFSelect } from '../RHF/RHFSelect'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFTextField } from '../RHF/RHFTextField'
 
+const now = new Date()
+const currentMonth = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`
+
 const initialValues: BookFormValues = {
   title: '',
   author: '',
@@ -20,7 +24,7 @@ const initialValues: BookFormValues = {
   genre: '',
   year: '',
   pages: '',
-  dateRead: '',
+  dateRead: currentMonth,
   description: '',
 }
 
@@ -85,7 +89,7 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
           {isNotWishlist && (
             <div className="grid grid-cols-2 gap-4">
               <RHFRating name="rating" label="Rating" />
-              <RHFMonthYearPicker name="dateRead" label="Date Read" placeholder="e.g. Jan 2026" />
+              <RHFMonthYearPicker name="dateRead" label="Date read" placeholder="e.g. Jan 2026" />
             </div>
           )}
 

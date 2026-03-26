@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react'
 import type { FC } from 'react'
-import { TextField } from './ui/TextField'
+import { TextField } from '../ui/TextField'
 
 interface SearchBarProps {
   title: string

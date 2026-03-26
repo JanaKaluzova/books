@@ -51,7 +51,7 @@ export async function createBook(book: Omit<Book, 'id'>, isWishlist: boolean): P
   const res = await fetch(`${STRAPI_URL}/api/books`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { ...book, isWishlist } }),
+    body: JSON.stringify({ data: { ...book, id: undefined, isWishlist } }),
   })
   const { data } = await res.json()
   return toBook(data)
@@ -61,7 +61,7 @@ export async function updateBook(id: string, updates: BookUpdates): Promise<Book
   const res = await fetch(`${STRAPI_URL}/api/books/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: updates }),
+    body: JSON.stringify({ data: { ...updates, id: undefined } }),
   })
   const { data } = await res.json()
   return toBook(data)

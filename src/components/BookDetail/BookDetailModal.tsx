@@ -76,9 +76,11 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
                 </div>
               )}
 
-              <DialogDescription className="mt-5 text-sm leading-relaxed text-text-secondary">
-                {book.description}
-              </DialogDescription>
+              {isNotWishlist && (
+                <DialogDescription className="mt-5 text-sm leading-relaxed text-text-secondary">
+                  {book.description}
+                </DialogDescription>
+              )}
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <MetaItem label="Year Published" value={String(book.year)} />
