@@ -1,17 +1,22 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchBooks, fetchWishlist } from '../../api/strapiApi'
+import { useQuery } from '@apollo/client/react'
+import { GET_BOOKS, GET_WISHLIST, type GqlBook, toBook } from '../../api/graphql/queries'
 
-export const booksQueryKey = ['books']
-export const wishlistQueryKey = ['wishlist']
+interface BooksData {
+  books: GqlBook[]
+}
 
-export const useBooksQuery = () =>
-  useQuery({
-    queryKey: booksQueryKey,
-    queryFn: fetchBooks,
-  })
+export const useBooksQuery = () => {
+  const { data, loading } = useQuery<BooksData>(GET_BOOKS)
+  return {
+    data: data?.books?.map(toBook),
+    isLoading: loading,
+  }
+}
 
-export const useWishlistQuery = () =>
-  useQuery({
-    queryKey: wishlistQueryKey,
-    queryFn: fetchWishlist,
-  })
+export const useWishlistQuery = () => {
+  const { data, loading } = useQuery<BooksData>(GET_WISHLIST)
+  return {
+    data: data?.books?.map(toBook),
+    isLoading: loading,
+  }
+}

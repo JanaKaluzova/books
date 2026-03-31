@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import { useBookModal } from '../../context/BookModalContext'
-import { navItems } from '../../data'
+import { navItems } from '../../navItems'
 import { Path } from '../../utils/paths'
 import { Mode } from '../../utils/types'
 import { AddNewBook } from './AddNewBook'

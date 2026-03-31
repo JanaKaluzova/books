@@ -1,10 +1,8 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { useSnackbar } from 'notistack'
 import { createContext, type FC, type ReactNode, useContext, useState } from 'react'
 import { BookModal } from '../components/BookModal/BookModal'
 import { useCreateBookMutation } from '../services/mutations/useCreateBookMutation'
 import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
-import { booksQueryKey, wishlistQueryKey } from '../services/queries/useBooksQuery'
 import { type Book, type ModalState, Mode } from '../utils/types'
 
 interface BookModalContextValue {
@@ -21,7 +19,6 @@ export const useBookModal = () => {
 }
 
 export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const queryClient = useQueryClient()
   const { enqueueSnackbar } = useSnackbar()
   const [modal, setModal] = useState<ModalState | null>(null)
 
@@ -38,9 +35,6 @@ export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => 
         { id: modal.book.id, updates: book },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: isWishlist ? wishlistQueryKey : booksQueryKey,
-            })
             enqueueSnackbar('Book updated successfully', { variant: 'success' })
             setModal(null)
           },
@@ -52,9 +46,6 @@ export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => 
         { book, isWishlist },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: isWishlist ? wishlistQueryKey : booksQueryKey,
-            })
             enqueueSnackbar('Book added successfully', { variant: 'success' })
             setModal(null)
           },

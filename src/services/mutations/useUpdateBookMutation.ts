@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query'
-import { updateBook } from '../../api/strapiApi'
+import { useMutation } from '@apollo/client/react'
+import { UPDATE_BOOK } from '../../api/graphql/mutations'
 import type { BookUpdates } from '../../utils/types'
 
 interface UpdateBookParams {
@@ -7,7 +7,23 @@ interface UpdateBookParams {
   updates: BookUpdates
 }
 
-export const useUpdateBookMutation = () =>
-  useMutation({
-    mutationFn: ({ id, updates }: UpdateBookParams) => updateBook(id, updates),
+interface MutateOptions {
+  onSuccess?: () => void
+  onError?: () => void
+}
+
+export const useUpdateBookMutation = () => {
+  const [updateBookMutation, { loading }] = useMutation(UPDATE_BOOK, {
+    refetchQueries: ['GetBooks', 'GetWishlist'],
   })
+
+  const mutate = ({ id, updates }: UpdateBookParams, options?: MutateOptions) => {
+    updateBookMutation({
+      variables: { documentId: id, data: updates },
+      onCompleted: () => options?.onSuccess?.(),
+      onError: () => options?.onError?.(),
+    })
+  }
+
+  return { mutate, isPending: loading }
+}

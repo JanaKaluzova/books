@@ -1,7 +1,23 @@
-import { useMutation } from '@tanstack/react-query'
-import { deleteBook } from '../../api/strapiApi'
+import { useMutation } from '@apollo/client/react'
+import { DELETE_BOOK } from '../../api/graphql/mutations'
 
-export const useDeleteBookMutation = () =>
-  useMutation({
-    mutationFn: (id: string) => deleteBook(id),
+interface MutateOptions {
+  onSuccess?: () => void
+  onError?: () => void
+}
+
+export const useDeleteBookMutation = () => {
+  const [deleteBookMutation, { loading }] = useMutation(DELETE_BOOK, {
+    refetchQueries: ['GetBooks', 'GetWishlist'],
   })
+
+  const mutate = (id: string, options?: MutateOptions) => {
+    deleteBookMutation({
+      variables: { documentId: id },
+      onCompleted: () => options?.onSuccess?.(),
+      onError: () => options?.onError?.(),
+    })
+  }
+
+  return { mutate, isPending: loading }
+}
