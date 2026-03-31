@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react'
-import { UPDATE_BOOK } from '../../api/graphql/mutations'
+import { UpdateBookDocument } from '../../api/graphql/generated/graphql'
 import type { BookUpdates } from '../../utils/types'
 
 interface UpdateBookParams {
@@ -13,8 +13,11 @@ interface MutateOptions {
 }
 
 export const useUpdateBookMutation = () => {
-  const [updateBookMutation, { loading }] = useMutation(UPDATE_BOOK, {
-    refetchQueries: ['GetBooks', 'GetWishlist'],
+  const [updateBookMutation, { loading }] = useMutation(UpdateBookDocument, {
+    update: (cache) => {
+      cache.evict({ fieldName: 'books' })
+      cache.gc()
+    },
   })
 
   const mutate = ({ id, updates }: UpdateBookParams, options?: MutateOptions) => {

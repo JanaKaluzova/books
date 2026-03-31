@@ -33,7 +33,9 @@ export interface BookFormValues
   pages: string
 }
 
-export interface BookUpdates extends Partial<Omit<Book, 'id'>> {
+export type BookPayload = Omit<Book, 'id'>
+
+export interface BookUpdates extends Partial<BookPayload> {
   isWishlist?: boolean
 }
 

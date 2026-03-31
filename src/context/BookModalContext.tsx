@@ -1,9 +1,9 @@
 import { useSnackbar } from 'notistack'
-import { createContext, type FC, type ReactNode, useContext, useState } from 'react'
+import { createContext, type FC, type PropsWithChildren, useContext, useState } from 'react'
 import { BookModal } from '../components/BookModal/BookModal'
 import { useCreateBookMutation } from '../services/mutations/useCreateBookMutation'
 import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
-import { type Book, type ModalState, Mode } from '../utils/types'
+import { type Book, type BookPayload, type ModalState, Mode } from '../utils/types'
 
 interface BookModalContextValue {
   openAddModal: (mode: Mode) => void
@@ -18,7 +18,7 @@ export const useBookModal = () => {
   return ctx
 }
 
-export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar()
   const [modal, setModal] = useState<ModalState | null>(null)
 
@@ -28,7 +28,7 @@ export const BookModalProvider: FC<{ children: ReactNode }> = ({ children }) => 
   const openAddModal = (mode: Mode) => setModal({ mode })
   const openEditModal = (book: Book, mode: Mode) => setModal({ mode, book })
 
-  const handleSubmit = (book: Book) => {
+  const handleSubmit = (book: BookPayload) => {
     const isWishlist = modal?.mode === Mode.WISHLIST
     if (modal?.book) {
       updateBook(

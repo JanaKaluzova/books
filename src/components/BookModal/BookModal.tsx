@@ -10,7 +10,7 @@ import {
 import { X } from 'lucide-react'
 import type { FC } from 'react'
 import { MODAL_BACKDROP } from '../../styles'
-import { type Book, type BookFormValues, Mode } from '../../utils/types'
+import { type Book, type BookFormValues, type BookPayload, Mode } from '../../utils/types'
 import { Button } from '../ui/Button'
 import { BookForm } from './BookForm'
 import { FormButtons } from './FormButtons'
@@ -20,7 +20,7 @@ interface BookModalProps {
   book?: Book
   mode: Mode
   isPending: boolean
-  onAdd: (book: Book) => void
+  onAdd: (book: BookPayload) => void
   onClose: () => void
 }
 
@@ -28,17 +28,15 @@ export const BookModal: FC<BookModalProps> = ({ onAdd, open, onClose, book, mode
   const isWishlist = mode === Mode.WISHLIST
 
   const onSubmit = (data: BookFormValues) => {
-    const saved: Book = {
+    onAdd({
       ...data,
-      id: book?.id ?? crypto.randomUUID(),
       year: Number(data.year),
       pages: Number(data.pages),
       coverUrl: data.coverUrl ?? '',
       dateRead: data.dateRead ?? '',
       description: data.description ?? '',
       rating: data.rating ?? 0,
-    }
-    onAdd(saved)
+    })
     onClose()
   }
 

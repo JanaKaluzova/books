@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react'
-import { DELETE_BOOK } from '../../api/graphql/mutations'
+import { DeleteBookDocument } from '../../api/graphql/generated/graphql'
 
 interface MutateOptions {
   onSuccess?: () => void
@@ -7,8 +7,11 @@ interface MutateOptions {
 }
 
 export const useDeleteBookMutation = () => {
-  const [deleteBookMutation, { loading }] = useMutation(DELETE_BOOK, {
-    refetchQueries: ['GetBooks', 'GetWishlist'],
+  const [deleteBookMutation, { loading }] = useMutation(DeleteBookDocument, {
+    update: (cache) => {
+      cache.evict({ fieldName: 'books' })
+      cache.gc()
+    },
   })
 
   const mutate = (id: string, options?: MutateOptions) => {
