@@ -1,0 +1,8 @@
+query myBooks {
+  myBooks {
+    id
+    title
+    author
+    publishedDate
+  }
+}

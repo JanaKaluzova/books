@@ -1,9 +1,9 @@
+import { useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
 import { useDeleteBookMutation } from '../services/mutations/useDeleteBookMutation'
-import { useBooksQuery } from '../services/queries/useBooksQuery'
 import { Mode } from '../utils/types'
 
 export const MyBooks = () => {
@@ -11,7 +11,7 @@ export const MyBooks = () => {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { data: books } = useBooksQuery()
+  const { data: books } = useQuery(MyBooksDocument)
   const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
 
   const filteredBooks = useMemo(() => {
