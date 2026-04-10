@@ -1,0 +1,14 @@
+query myBooks {
+  books {
+    documentId
+    title
+    author
+    coverUrl
+    rating
+    genre
+    year
+    pages
+    dateRead
+    description
+  }
+}

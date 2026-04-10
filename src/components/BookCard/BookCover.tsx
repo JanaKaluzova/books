@@ -9,6 +9,7 @@ interface BookCoverProps {
 export const BookCover: FC<BookCoverProps> = ({ src, alt, className = '' }) => {
   const [isLoaded, setIsLoaded] = useState(false)
 
+  //TODO: remove the state, handle it with Query state and show skeletons in the BookCard instead of the shimmer effect on the image
   return (
     <div className={`relative overflow-hidden ${className}`}>
       {!isLoaded && (
