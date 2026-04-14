@@ -1,8 +1,13 @@
+import { useApolloClient, useMutation } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { createContext, type FC, type PropsWithChildren, useContext, useState } from 'react'
+import {
+  CreateBookDocument,
+  MyBooksDocument,
+  MyWishlistDocument,
+  UpdateBookDocument,
+} from '../api/generated/graphql'
 import { BookModal } from '../components/BookModal/BookModal'
-import { useCreateBookMutation } from '../services/mutations/useCreateBookMutation'
-import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
 import { type Book, type BookPayload, type ModalState, Mode } from '../utils/types'
 
 interface BookModalContextValue {
@@ -20,10 +25,11 @@ export const useBookModal = () => {
 
 export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar()
+  const client = useApolloClient()
   const [modal, setModal] = useState<ModalState | null>(null)
 
-  const { mutate: createBook, isPending: isCreating } = useCreateBookMutation()
-  const { mutate: updateBook, isPending: isUpdating } = useUpdateBookMutation()
+  const [createBook, { loading: isCreating }] = useMutation(CreateBookDocument)
+  const [updateBook, { loading: isUpdating }] = useMutation(UpdateBookDocument)
 
   const openAddModal = (mode: Mode) => setModal({ mode })
   const openEditModal = (book: Book, mode: Mode) => setModal({ mode, book })
@@ -31,28 +37,25 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleSubmit = (book: BookPayload) => {
     const isWishlist = modal?.mode === Mode.WISHLIST
     if (modal?.book) {
-      updateBook(
-        { id: modal.book.id, updates: book },
-        {
-          onSuccess: () => {
-            enqueueSnackbar('Book updated successfully', { variant: 'success' })
-            setModal(null)
-          },
-          onError: () => enqueueSnackbar('Failed to update book', { variant: 'error' }),
+      updateBook({
+        variables: { documentId: modal.book.id, data: book },
+        onCompleted: () => {
+          enqueueSnackbar('Book updated successfully', { variant: 'success' })
+          setModal(null)
         },
-      )
+        onError: () => enqueueSnackbar('Failed to update book', { variant: 'error' }),
+      })
     } else {
-      createBook(
-        { book, isWishlist },
-        {
-          onSuccess: () => {
-            enqueueSnackbar('Book added successfully', { variant: 'success' })
-            setModal(null)
-          },
-          onError: () => enqueueSnackbar('Failed to add book', { variant: 'error' }),
+      createBook({
+        variables: { data: { ...book, isWishlist } },
+        onCompleted: () => {
+          enqueueSnackbar('Book added successfully', { variant: 'success' })
+          setModal(null)
         },
-      )
+        onError: () => enqueueSnackbar('Failed to add book', { variant: 'error' }),
+      })
     }
+    client.refetchQueries({ include: [isWishlist ? MyWishlistDocument : MyBooksDocument] })
   }
 
   return (
