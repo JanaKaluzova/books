@@ -56,6 +56,7 @@ export const Wishlist = () => {
       variables: { documentId: book.id, data: { isWishlist: false } },
       onCompleted: () => {
         client.refetchQueries({ include: [MyBooksDocument, MyWishlistDocument] })
+        enqueueSnackbar('Book moved to My Books successfully', { variant: 'success' })
       },
       onError: () => enqueueSnackbar('Failed to move book to My Books', { variant: 'error' }),
     })

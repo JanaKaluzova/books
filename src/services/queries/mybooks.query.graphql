@@ -1,5 +1,5 @@
 query myBooks {
-  books {
+  books(filters: { isWishlist: { eq: false } }) {
     documentId
     title
     author
