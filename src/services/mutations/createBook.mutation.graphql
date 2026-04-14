@@ -1,0 +1,15 @@
+mutation createBook($data: BookInput!) {
+  createBook(data: $data) {
+    documentId
+    title
+    author
+    coverUrl
+    rating
+    genre
+    year
+    pages
+    dateRead
+    description
+    isWishlist
+  }
+}

@@ -1,21 +1,22 @@
-import { useQuery } from '@apollo/client/react'
+import { useApolloClient, useMutation, useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
-import { MyBooksDocument } from '../api/generated/graphql'
+import { DeleteBookDocument, MyBooksDocument } from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { useDeleteBookMutation } from '../services/mutations/useDeleteBookMutation'
 import { mapGqlBook } from '../utils/mappers'
 import { Mode } from '../utils/types'
 
 export const MyBooks = () => {
+  const { enqueueSnackbar } = useSnackbar()
+  const client = useApolloClient()
+
   const [search, setSearch] = useState('')
 
-  const { enqueueSnackbar } = useSnackbar()
-
   // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
+
   const { data } = useQuery(MyBooksDocument)
-  const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
+  const [deleteBook, { loading: isDeletingBook }] = useMutation(DeleteBookDocument)
 
   const books = useMemo(
     () => data?.books?.filter((b) => b != null).map(mapGqlBook) ?? [],
@@ -36,8 +37,12 @@ export const MyBooks = () => {
   }, [search, books])
 
   const handleDeleteBook = (id: string) => {
-    deleteBook(id, {
-      onSuccess: () => enqueueSnackbar('Book deleted successfully', { variant: 'success' }),
+    deleteBook({
+      variables: { documentId: id },
+      onCompleted: () => {
+        client.refetchQueries({ include: [MyBooksDocument] })
+        enqueueSnackbar('Book deleted successfully', { variant: 'success' })
+      },
       onError: () => enqueueSnackbar('Failed to delete book', { variant: 'error' }),
     })
   }

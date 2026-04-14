@@ -1,0 +1,15 @@
+mutation updateBook($documentId: ID!, $data: BookInput!) {
+  updateBook(documentId: $documentId, data: $data) {
+    documentId
+    title
+    author
+    coverUrl
+    rating
+    genre
+    year
+    pages
+    dateRead
+    description
+    isWishlist
+  }
+}

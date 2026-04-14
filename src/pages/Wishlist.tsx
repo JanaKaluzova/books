@@ -1,11 +1,14 @@
-import { useQuery } from '@apollo/client/react'
+import { useApolloClient, useMutation, useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
-import { MyWishlistDocument } from '../api/generated/graphql'
+import {
+  DeleteBookDocument,
+  MyBooksDocument,
+  MyWishlistDocument,
+  UpdateBookDocument,
+} from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { useDeleteBookMutation } from '../services/mutations/useDeleteBookMutation'
-import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
 import { mapGqlBook } from '../utils/mappers'
 import { type Book, Mode } from '../utils/types'
 
@@ -15,9 +18,10 @@ export const Wishlist = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
+  const client = useApolloClient()
   const { data } = useQuery(MyWishlistDocument)
-  const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
-  const { mutate: updateBook, isPending: isUpdatingBook } = useUpdateBookMutation()
+  const [deleteBook, { loading: isDeletingBook }] = useMutation(DeleteBookDocument)
+  const [updateBook, { loading: isUpdatingBook }] = useMutation(UpdateBookDocument)
 
   const books = useMemo(
     () => data?.books?.filter((b) => b != null).map(mapGqlBook) ?? [],
@@ -37,14 +41,24 @@ export const Wishlist = () => {
   }, [search, books])
 
   const handleDeleteWishlistBook = (id: string) => {
-    deleteBook(id, {
-      onSuccess: () => enqueueSnackbar('Book deleted successfully', { variant: 'success' }),
+    deleteBook({
+      variables: { documentId: id },
+      onCompleted: () => {
+        client.refetchQueries({ include: [MyWishlistDocument] })
+        enqueueSnackbar('Book deleted successfully', { variant: 'success' })
+      },
       onError: () => enqueueSnackbar('Failed to delete book', { variant: 'error' }),
     })
   }
 
   const handleMoveToMyBooks = (book: Book) => {
-    updateBook({ id: book.id, updates: { isWishlist: false } })
+    updateBook({
+      variables: { documentId: book.id, data: { isWishlist: false } },
+      onCompleted: () => {
+        client.refetchQueries({ include: [MyBooksDocument, MyWishlistDocument] })
+      },
+      onError: () => enqueueSnackbar('Failed to move book to My Books', { variant: 'error' }),
+    })
   }
 
   return (
