@@ -13,6 +13,7 @@ export const MyBooks = () => {
 
   const { enqueueSnackbar } = useSnackbar()
 
+  // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
   const { data } = useQuery(MyBooksDocument)
   const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
 

@@ -22,7 +22,7 @@ const config: CodegenConfig = {
         preResolveTypes: true,
       },
     },
-    'src/generated/graphql.schema.json': {
+    'src/api/generated/graphql.schema.json': {
       plugins: ['introspection'],
     },
   },

@@ -1,10 +1,12 @@
+import { useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
+import { MyWishlistDocument } from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
 import { useDeleteBookMutation } from '../services/mutations/useDeleteBookMutation'
 import { useUpdateBookMutation } from '../services/mutations/useUpdateBookMutation'
-import { useWishlistQuery } from '../services/queries/useBooksQuery'
+import { mapGqlBook } from '../utils/mappers'
 import { type Book, Mode } from '../utils/types'
 
 export const Wishlist = () => {
@@ -12,20 +14,27 @@ export const Wishlist = () => {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { data: wishlist } = useWishlistQuery()
+  // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
+  const { data } = useQuery(MyWishlistDocument)
   const { mutate: deleteBook, isPending: isDeletingBook } = useDeleteBookMutation()
   const { mutate: updateBook, isPending: isUpdatingBook } = useUpdateBookMutation()
 
+  const books = useMemo(
+    () => data?.books?.filter((b) => b != null).map(mapGqlBook) ?? [],
+    [data?.books],
+  )
+
+  //TODO: move the filtering to BE, we would like to use infinite scrolling instead of pagination
   const filteredBooks = useMemo(() => {
-    if (!search.trim()) return wishlist
+    if (!search.trim()) return books
     const q = search.toLowerCase()
-    return wishlist?.filter(
+    return books?.filter(
       (b) =>
         b.title.toLowerCase().includes(q) ||
         b.author.toLowerCase().includes(q) ||
         b.genre.toLowerCase().includes(q),
     )
-  }, [search, wishlist])
+  }, [search, books])
 
   const handleDeleteWishlistBook = (id: string) => {
     deleteBook(id, {
