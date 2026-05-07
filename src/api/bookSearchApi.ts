@@ -15,15 +15,24 @@ interface GoogleBooksVolume {
   }
 }
 
-export const searchBooks = async (query: string): Promise<BookSearchResult[]> => {
+export const searchBookByIsbn = async (isbn: string): Promise<BookSearchResult | null> => {
+  const results = await searchBooks(`isbn:${isbn}`, { printType: undefined })
+  return results[0] ?? null
+}
+
+export const searchBooks = async (
+  query: string,
+  overrides: { printType?: string } = { printType: 'books' },
+): Promise<BookSearchResult[]> => {
   const apiKey = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY
 
   const params = new URLSearchParams({
     q: query,
     maxResults: '8',
-    printType: 'books',
     key: apiKey,
-    fields: 'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks))',
+    fields:
+      'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks))',
+    ...(overrides.printType ? { printType: overrides.printType } : {}),
   })
 
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`)

@@ -38,9 +38,14 @@ export default {
         shimmer: {
           '100%': { transform: 'translateX(200%)' },
         },
+        scan: {
+          '0%, 100%': { top: '0%' },
+          '50%': { top: '100%' },
+        },
       },
       animation: {
         shimmer: 'shimmer 1.5s infinite',
+        scan: 'scan 2s ease-in-out infinite',
       },
     },
   },
