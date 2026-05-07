@@ -12,3 +12,9 @@ export const MONTHS = [
   'Nov',
   'Dec',
 ]
+
+export const parseDateRead = (dateRead?: string): number => {
+  if (!dateRead) return -1
+  const [month, year] = dateRead.split(' ')
+  return Number(year) * 12 + MONTHS.indexOf(month)
+}

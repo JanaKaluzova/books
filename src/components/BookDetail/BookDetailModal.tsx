@@ -11,6 +11,7 @@ import { X } from 'lucide-react'
 import type { FC } from 'react'
 import { MODAL_BACKDROP } from '../../styles'
 import { type Book, Mode } from '../../utils/types'
+import { BookCover } from '../BookCard/BookCover'
 import { StarRating } from '../BookCard/StarRating'
 import { Button } from '../ui/Button'
 import { BookDetailButtons } from './BookDetailButtons'
@@ -52,10 +53,12 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
             </DialogClose>
 
             <div className="relative flex-shrink-0 sm:w-56">
-              <img
+              <BookCover
                 src={book.coverUrl}
                 alt={book.title}
-                className="h-64 w-full object-cover sm:h-full"
+                title={book.title}
+                author={book.author}
+                className="h-64 w-full sm:h-full"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-white/60" />
             </div>
@@ -84,7 +87,7 @@ export const BookDetailModal: FC<BookDetailModalProps> = ({
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <MetaItem label="Year Published" value={String(book.year)} />
-                <MetaItem label="Pages" value={String(book.pages)} />
+                {book.pages != null && <MetaItem label="Pages" value={String(book.pages)} />}
                 {isNotWishlist && <MetaItem label="Date Read" value={book.dateRead} />}
               </div>
 

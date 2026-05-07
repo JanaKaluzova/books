@@ -3,13 +3,13 @@ import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import {
   DeleteBookDocument,
-  MyBooksDocument,
-  MyWishlistDocument,
+  MyBooksListDocument,
+  MyWishlistListDocument,
   UpdateBookDocument,
 } from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { mapGqlBook } from '../utils/mappers'
+import { mapGqlBookListItem } from '../utils/mappers'
 import { type Book, Mode } from '../utils/types'
 
 export const Wishlist = () => {
@@ -17,14 +17,13 @@ export const Wishlist = () => {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
   const client = useApolloClient()
-  const { data } = useQuery(MyWishlistDocument)
+  const { data, loading } = useQuery(MyWishlistListDocument)
   const [deleteBook, { loading: isDeletingBook }] = useMutation(DeleteBookDocument)
   const [updateBook, { loading: isUpdatingBook }] = useMutation(UpdateBookDocument)
 
   const books = useMemo(
-    () => data?.books?.filter((b) => b != null).map(mapGqlBook) ?? [],
+    () => data?.books?.filter((b) => b != null).map(mapGqlBookListItem) ?? [],
     [data?.books],
   )
 
@@ -44,7 +43,7 @@ export const Wishlist = () => {
     deleteBook({
       variables: { documentId: id },
       onCompleted: () => {
-        client.refetchQueries({ include: [MyWishlistDocument] })
+        client.refetchQueries({ include: [MyWishlistListDocument] })
         enqueueSnackbar('Book deleted successfully', { variant: 'success' })
       },
       onError: () => enqueueSnackbar('Failed to delete book', { variant: 'error' }),
@@ -55,7 +54,7 @@ export const Wishlist = () => {
     updateBook({
       variables: { documentId: book.id, data: { isWishlist: false } },
       onCompleted: () => {
-        client.refetchQueries({ include: [MyBooksDocument, MyWishlistDocument] })
+        client.refetchQueries({ include: [MyBooksListDocument, MyWishlistListDocument] })
         enqueueSnackbar('Book moved to My Books successfully', { variant: 'success' })
       },
       onError: () => enqueueSnackbar('Failed to move book to My Books', { variant: 'error' }),
@@ -76,6 +75,7 @@ export const Wishlist = () => {
         onDeleteBook={handleDeleteWishlistBook}
         onAlreadyRead={handleMoveToMyBooks}
         mode={Mode.WISHLIST}
+        isLoading={loading}
         isDeleting={isDeletingBook}
         isMovingBook={isUpdatingBook}
       />

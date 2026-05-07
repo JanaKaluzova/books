@@ -1,12 +1,16 @@
+import { useQuery } from '@apollo/client/react'
 import { type FC, useState } from 'react'
-import type { Book, Mode } from '../../utils/types'
-import { BookCard2 } from '../BookCard/BookCard2'
+import { BookDetailDocument } from '../../api/generated/graphql'
+import { mapGqlBook } from '../../utils/mappers'
+import type { Book, BookListItem, Mode } from '../../utils/types'
+import { BookCard } from '../BookCard/BookCard'
 import { BookDetailModal } from '../BookDetail/BookDetailModal'
 import { NoResults } from '../NoResults/NoResults'
 
 interface BookListProps {
-  filteredBooks: Book[]
+  filteredBooks: BookListItem[]
   mode: Mode
+  isLoading?: boolean
   isDeleting: boolean
   isMovingBook: boolean
   onDeleteBook: (id: string) => void
@@ -16,14 +20,22 @@ interface BookListProps {
 export const BookList: FC<BookListProps> = ({
   filteredBooks,
   mode,
+  isLoading,
   onDeleteBook,
   onAlreadyRead,
   isDeleting,
   isMovingBook,
 }) => {
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null)
 
-  const handleCloseDetail = () => setSelectedBook(null)
+  const { data: detailData } = useQuery(BookDetailDocument, {
+    variables: { documentId: selectedBookId! },
+    skip: !selectedBookId,
+  })
+
+  const selectedBook = detailData?.book ? mapGqlBook(detailData.book) : null
+
+  const handleCloseDetail = () => setSelectedBookId(null)
 
   const handleDeleteBook = (id: string) => {
     onDeleteBook(id)
@@ -42,7 +54,12 @@ export const BookList: FC<BookListProps> = ({
       {filteredBooks.length > 0 && (
         <div className="mt-8 grid grid-cols-2 gap-2 lg:gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {filteredBooks.map((book) => (
-            <BookCard2 book={book} key={book.id} onSelectBook={setSelectedBook} />
+            <BookCard
+              book={book}
+              key={book.id}
+              isLoading={isLoading}
+              onSelectBook={setSelectedBookId}
+            />
           ))}
         </div>
       )}

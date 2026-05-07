@@ -1,10 +1,11 @@
 import { useApolloClient, useMutation, useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
-import { DeleteBookDocument, MyBooksDocument } from '../api/generated/graphql'
+import { DeleteBookDocument, MyBooksListDocument } from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { mapGqlBook } from '../utils/mappers'
+import { parseDateRead } from '../utils/const'
+import { mapGqlBookListItem } from '../utils/mappers'
 import { Mode } from '../utils/types'
 
 export const MyBooks = () => {
@@ -13,34 +14,38 @@ export const MyBooks = () => {
 
   const [search, setSearch] = useState('')
 
-  // TODO: change the query so it returns the attributes needed for the list, then create another query for the book details
-
-  const { data } = useQuery(MyBooksDocument)
+  const { data, loading } = useQuery(MyBooksListDocument)
   const [deleteBook, { loading: isDeletingBook }] = useMutation(DeleteBookDocument)
 
   const books = useMemo(
-    () => data?.books?.filter((b) => b != null).map(mapGqlBook) ?? [],
+    () => data?.books?.filter((b) => b != null).map(mapGqlBookListItem) ?? [],
     [data?.books],
   )
 
   //TODO: move the filtering to BE, we would like to use infinite scrolling instead of pagination
   const filteredBooks = useMemo(() => {
-    if (!search.trim()) return books
+    const filtered = search.trim()
+      ? books.filter((b) => {
+          const q = search.toLowerCase()
+          return (
+            b.title.toLowerCase().includes(q) ||
+            b.author.toLowerCase().includes(q) ||
+            b.genre.toLowerCase().includes(q)
+          )
+        })
+      : books
 
-    const q = search.toLowerCase()
-    return books.filter(
-      (b) =>
-        b.title.toLowerCase().includes(q) ||
-        b.author.toLowerCase().includes(q) ||
-        b.genre.toLowerCase().includes(q),
-    )
+    return [...filtered].sort((a, b) => {
+      const dateDiff = parseDateRead(b.dateRead) - parseDateRead(a.dateRead)
+      return dateDiff !== 0 ? dateDiff : a.title.localeCompare(b.title)
+    })
   }, [search, books])
 
   const handleDeleteBook = (id: string) => {
     deleteBook({
       variables: { documentId: id },
       onCompleted: () => {
-        client.refetchQueries({ include: [MyBooksDocument] })
+        client.refetchQueries({ include: [MyBooksListDocument] })
         enqueueSnackbar('Book deleted successfully', { variant: 'success' })
       },
       onError: () => enqueueSnackbar('Failed to delete book', { variant: 'error' }),
@@ -60,6 +65,7 @@ export const MyBooks = () => {
         filteredBooks={filteredBooks ?? []}
         onDeleteBook={handleDeleteBook}
         mode={Mode.MY_BOOKS}
+        isLoading={loading}
         isDeleting={isDeletingBook}
         isMovingBook={false}
       />

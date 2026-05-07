@@ -1,0 +1,14 @@
+query bookDetail($documentId: ID!) {
+  book(documentId: $documentId) {
+    documentId
+    title
+    author
+    coverUrl
+    rating
+    genre
+    year
+    pages
+    dateRead
+    description
+  }
+}

@@ -83,7 +83,7 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
           <div className="grid grid-cols-3 gap-4">
             <RHFTextField name="genre" label="Genre *" placeholder="e.g. Sci-Fi" />
             <RHFSelect name="year" label="Year *" placeholder="Year" options={yearOptions} />
-            <RHFTextField name="pages" label="Pages *" placeholder="300" type="number" />
+            <RHFTextField name="pages" label="Pages" placeholder="300" type="number" />
           </div>
 
           {isNotWishlist && (
@@ -115,7 +115,7 @@ const mapValues = (entity: Book | undefined): BookFormValues | undefined => {
     coverUrl: entity.coverUrl ?? '',
     genre: entity.genre,
     year: String(entity.year),
-    pages: String(entity.pages),
+    pages: entity.pages != null ? String(entity.pages) : '',
     dateRead: entity.dateRead ?? '',
     description: entity.description ?? '',
     title: entity.title,
