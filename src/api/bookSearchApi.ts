@@ -15,13 +15,15 @@ interface GoogleBooksVolume {
   }
 }
 
-export async function searchBooks(query: string): Promise<BookSearchResult[]> {
+export const searchBooks = async (query: string): Promise<BookSearchResult[]> => {
+  const apiKey = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY
+
   const params = new URLSearchParams({
     q: query,
     maxResults: '8',
     printType: 'books',
-    fields:
-      'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks))',
+    key: apiKey,
+    fields: 'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks))',
   })
 
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`)
@@ -30,11 +32,11 @@ export async function searchBooks(query: string): Promise<BookSearchResult[]> {
     throw new Error(`Google Books API error: ${res.status}`)
   }
 
-  const data = await res.json()
+  const data = (await res.json()) as { items?: GoogleBooksVolume[] }
 
   if (!data.items) return []
 
-  return (data.items as GoogleBooksVolume[]).map((item): BookSearchResult => {
+  return data.items.map((item) => {
     const info = item.volumeInfo ?? {}
     const coverUrl = info.imageLinks?.thumbnail ?? info.imageLinks?.smallThumbnail ?? ''
 
