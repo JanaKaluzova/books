@@ -5,7 +5,7 @@ export const bookFormSchema = z.object({
   author: z.string().min(1, 'Author is required'),
   genre: z.string().min(1, 'Genre is required'),
   year: z.string().min(1, 'Year is required'),
-  pages: z.string().min(1, 'Pages is required'),
+  pages: z.string().optional().or(z.literal('')),
   coverUrl: z.string().optional().or(z.literal('')),
   dateRead: z.string().optional().or(z.literal('')),
   description: z.string().optional().or(z.literal('')),

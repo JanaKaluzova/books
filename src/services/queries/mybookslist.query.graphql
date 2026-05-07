@@ -1,0 +1,10 @@
+query myBooksList {
+  books(filters: { isWishlist: { eq: false } }) {
+    documentId
+    title
+    author
+    coverUrl
+    genre
+    dateRead
+  }
+}

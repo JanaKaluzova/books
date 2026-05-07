@@ -31,7 +31,7 @@ export const BookModal: FC<BookModalProps> = ({ onAdd, open, onClose, book, mode
     onAdd({
       ...data,
       year: Number(data.year),
-      pages: Number(data.pages),
+      pages: data.pages ? Number(data.pages) : undefined,
       coverUrl: data.coverUrl ?? '',
       dateRead: data.dateRead ?? '',
       description: data.description ?? '',

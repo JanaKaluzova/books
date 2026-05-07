@@ -1,7 +1,12 @@
 import { useApolloClient, useMutation } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
 import { createContext, type FC, type PropsWithChildren, useContext, useState } from 'react'
-import { CreateBookDocument, MyBooksDocument, MyWishlistDocument, UpdateBookDocument } from '../api/generated/graphql'
+import {
+  CreateBookDocument,
+  MyBooksListDocument,
+  MyWishlistListDocument,
+  UpdateBookDocument,
+} from '../api/generated/graphql'
 import { BookModal } from '../components/BookModal/BookModal'
 import { type Book, type BookPayload, type ModalState, Mode } from '../utils/types'
 
@@ -35,6 +40,9 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
       updateBook({
         variables: { documentId: modal.book.id, data: book },
         onCompleted: () => {
+          client.refetchQueries({
+            include: [isWishlist ? MyWishlistListDocument : MyBooksListDocument],
+          })
           enqueueSnackbar('Book updated successfully', { variant: 'success' })
           setModal(null)
         },
@@ -44,7 +52,9 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
       createBook({
         variables: { data: { ...book, isWishlist } },
         onCompleted: () => {
-          client.refetchQueries({ include: [isWishlist ? MyWishlistDocument : MyBooksDocument] })
+          client.refetchQueries({
+            include: [isWishlist ? MyWishlistListDocument : MyBooksListDocument],
+          })
           enqueueSnackbar('Book added successfully', { variant: 'success' })
           setModal(null)
         },

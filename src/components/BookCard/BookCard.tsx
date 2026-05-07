@@ -1,39 +1,45 @@
 import type { FC } from 'react'
-import type { Book } from '../../utils/types'
+import type { BookListItem } from '../../utils/types'
 import { BookCover } from './BookCover'
-import { StarRating } from './StarRating'
 
 interface BookCardProps {
-  book: Book
+  book: BookListItem
+  isLoading?: boolean
+  onSelectBook: (id: string) => void
 }
 
-export const BookCard: FC<BookCardProps> = ({ book }) => {
+export const BookCard: FC<BookCardProps> = ({ book, isLoading, onSelectBook }) => {
   return (
-    <div className="group cursor-pointer rounded-2xl bg-white p-3 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2">
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface-200">
+    <button
+      type="button"
+      onClick={() => onSelectBook(book.id)}
+      className="group w-full text-left cursor-pointer rounded-2xl shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2"
+    >
+      <div className="relative aspect-[2/3] w-full bg-surface-200 [clip-path:inset(0_round_1rem)]">
         <BookCover
           src={book.coverUrl}
           alt={`${book.title} cover`}
-          className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+          title={book.title}
+          author={book.author}
+          isLoading={isLoading}
+          className="h-full w-full transition-transform duration-500 group-hover:scale-105 rounded-2xl"
         />
-        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="p-4 pb-3">
-            <span className="inline-block rounded-full bg-accent-500/90 px-3 py-1 text-xs font-medium text-white">
-              {book.genre}
-            </span>
+
+        <div className="absolute inset-x-2 bottom-2 rounded-xl bg-white/75 backdrop-blur-md border border-white/40 px-3.5 py-2.5 shadow-lg opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+          <h3 className="line-clamp-1 font-serif text-sm font-bold text-text-primary">
+            {book.title}
+          </h3>
+          <div className="mt-1 flex items-center justify-between">
+            <p className="line-clamp-1 text-xs text-text-primary/70">{book.author}</p>
           </div>
         </div>
-      </div>
-      <div className="mt-3 space-y-1.5 px-1">
-        <h3 className="line-clamp-1 font-serif text-base font-semibold text-text-primary transition-colors duration-200 group-hover:text-accent-500">
-          {book.title}
-        </h3>
-        <p className="line-clamp-1 text-sm text-text-secondary">{book.author}</p>
-        <div className="flex items-center justify-between">
-          <StarRating rating={book.rating} size="sm" />
-          <span className="text-xs text-text-muted">{book.dateRead}</span>
+
+        <div className="absolute top-3 left-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="inline-block rounded-full bg-accent-500/90 px-3 py-1 text-xs font-medium text-white shadow-sm">
+            {book.genre}
+          </span>
         </div>
       </div>
-    </div>
+    </button>
   )
 }
