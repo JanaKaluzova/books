@@ -52,3 +52,11 @@ export interface ModalState {
   mode: Mode
   book?: Book
 }
+
+export enum Status {
+  SCANNING = 'SCANNING',
+  LOADING = 'LOADING',
+  NOT_FOUND = 'NOT_FOUND',
+  API_ERROR = 'API_ERROR',
+  CAMERA_ERROR = 'CAMERA_ERROR',
+}

@@ -1,17 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type FC, useMemo } from 'react'
+import { ScanLine } from 'lucide-react'
+import { type FC, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
 import { MONTHS } from '../../utils/const'
 import { bookFormSchema } from '../../utils/formValidation'
 import { yearOptions } from '../../utils/options'
 import { type Book, type BookFormValues, type BookSearchResult, Mode } from '../../utils/types'
+import { Button } from '../ui/Button'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
 import { RHFMonthYearPicker } from '../RHF/RHFMonthYearPicker'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFSelect } from '../RHF/RHFSelect'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFTextField } from '../RHF/RHFTextField'
+import { ISBNScanner } from './ISBNScanner'
 
 const now = new Date()
 const currentMonth = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`
@@ -36,6 +39,7 @@ interface BookFormProps {
 
 export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
+  const [showScanner, setShowScanner] = useState(false)
 
   const resolver = useMemo(() => zodResolver(bookFormSchema), [])
 
@@ -54,16 +58,35 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
     formMethods.setValue('description', result.description)
   }
 
+  const handleIsbnFound = (result: BookSearchResult) => {
+    formMethods.setValue('title', result.title)
+    handleBookSelect(result)
+    setShowScanner(false)
+  }
+
   useFormInitialValues(mapValues(book), formMethods.reset)
 
   return (
     <FormProvider {...formMethods}>
+      {showScanner && (
+        <ISBNScanner onBookFound={handleIsbnFound} onClose={() => setShowScanner(false)} />
+      )}
       <form
         id="bookForm"
         onSubmit={formMethods.handleSubmit(onSubmit)}
         className="flex flex-col overflow-y-auto px-6 py-5"
       >
         <div className="space-y-4">
+          {!book && (
+            <Button
+              type="button"
+              onClick={() => setShowScanner(true)}
+              className="flex w-full items-center justify-center gap-2 md:hidden"
+            >
+              <ScanLine className="h-4 w-4" />
+              Scan ISBN barcode
+            </Button>
+          )}
           <div className="grid grid-cols-2 gap-4">
             <RHFAutocomplete
               name="title"

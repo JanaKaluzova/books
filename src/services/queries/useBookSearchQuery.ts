@@ -7,8 +7,11 @@ interface QueryParams {
   enabled: boolean
 }
 
+const isIsbn = (q: string) => /^\d{10}$|^\d{13}$/.test(q.replace(/-/g, ''))
+
 const fetchBooks = async (params: QueryParams) => {
-  return searchBooks(params.query)
+  const query = isIsbn(params.query) ? `isbn:${params.query.replace(/-/g, '')}` : params.query
+  return searchBooks(query, isIsbn(params.query) ? { printType: undefined } : undefined)
 }
 
 export const useBookSearchQuery = (query: string) => {
