@@ -1,24 +1,26 @@
-# 📚 Bookshelf
+# Bookshelf — Frontend
 
-A personal book tracking app with a warm, editorial design aesthetic.
+Personal book tracking app with a warm, editorial design aesthetic.
 
 ## Tech Stack
 
-- **React** + **TypeScript**
+- **React 19** + **TypeScript**
 - **Vite** — dev server & build
-- **Tailwind CSS** — styling
+- **Tailwind CSS v4** — styling (config via `@theme` in `src/index.css`)
+- **Apollo Client** — GraphQL queries & mutations
+- **React Hook Form** + **Zod** — forms & validation
+- **Radix UI** — accessible UI primitives
 - **Lucide React** — icons
 - **Biome** — linting & formatting
 
 ## Getting Started
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
 ```
+
+The dev server connects to Strapi at `http://localhost:1337` by default. To run the full stack in Docker instead, see the root `AGENTS.md`.
 
 ## Scripts
 
@@ -30,7 +32,8 @@ npm run dev
 | `npm run lint` | Run Biome linter |
 | `npm run format` | Format code with Biome |
 | `npm run check` | Lint + format in one pass |
+| `npm run codegen` | Regenerate GraphQL types from Strapi schema |
 
 ## Design
 
-The app uses the **Editorial Float** theme — warm ivory backgrounds, DM Serif Display headings, terracotta accents, and floating card shadows.
+Uses the **Editorial Float** theme — warm ivory backgrounds, DM Serif Display headings, terracotta accents, and floating card shadows.
