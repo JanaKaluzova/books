@@ -8,7 +8,7 @@ NAS_USER     ?= azul
 NAS_SSH_PORT ?= 22
 NAS_PROJECT_DIR ?= /volume1/docker/books
 
-.PHONY: help dev dev-down dev-logs build deploy deploy-registry clean
+.PHONY: help dev dev-down dev-logs build deploy deploy-registry nas-stop nas-restart clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -46,6 +46,16 @@ deploy: ## Build + deploy to NAS via SSH (docker save/load)
 deploy-registry: ## Build + deploy to NAS via private Docker registry
 	NAS_HOST=$(NAS_HOST) NAS_USER=$(NAS_USER) NAS_SSH_PORT=$(NAS_SSH_PORT) \
 		NAS_PROJECT_DIR=$(NAS_PROJECT_DIR) TAG=$(TAG) ./deploy.sh --mode registry
+
+# ── NAS Control ─────────────────────────────────────────────────
+
+nas-stop: ## Stop all containers on NAS
+	ssh -p $(NAS_SSH_PORT) $(NAS_USER)@$(NAS_HOST) \
+		"cd $(NAS_PROJECT_DIR) && /var/packages/ContainerManager/target/usr/bin/docker compose down"
+
+nas-restart: ## Stop containers on NAS, then redeploy
+	$(MAKE) nas-stop
+	$(MAKE) deploy
 
 # ── NAS First-Time Setup ────────────────────────────────────────
 

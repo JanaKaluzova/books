@@ -78,12 +78,12 @@ docker build \
   --platform "${NAS_PLATFORM}" \
   --target production \
   --tag "${STRAPI_IMAGE}" \
-  ./strapi
+  ./Strapi
 
 docker build \
   --platform "${NAS_PLATFORM}" \
   --tag "${FRONTEND_IMAGE}" \
-  ./frontend
+  ./FE
 
 ok "Images built: ${STRAPI_IMAGE}, ${FRONTEND_IMAGE}"
 
