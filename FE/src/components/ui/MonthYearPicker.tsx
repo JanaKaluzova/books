@@ -110,7 +110,10 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
                   type="button"
                   disabled={isFuture}
                   onClick={() => handleSelect(i)}
-                  className={cn('rounded-lg px-2 py-1.5 text-sm transition-colors', getMonthClass(isSelected, isFuture))}
+                  className={cn(
+                    'rounded-lg px-2 py-1.5 text-sm transition-colors',
+                    getMonthClass(isSelected, isFuture),
+                  )}
                 >
                   {month}
                 </button>

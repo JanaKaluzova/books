@@ -47,7 +47,12 @@ export const BookCover: FC<BookCoverProps> = ({
           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent" />
         </div>
       )}
-      <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover [image-orientation:from-image]"
+        loading="lazy"
+      />
     </div>
   )
 }

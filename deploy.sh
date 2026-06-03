@@ -27,6 +27,7 @@ MODE="${MODE:-ssh}"
 BUILD_ONLY="${BUILD_ONLY:-false}"
 HTTPS_PORT="${HTTPS_PORT:-9443}"
 VITE_GOOGLE_BOOKS_API_KEY="${VITE_GOOGLE_BOOKS_API_KEY:-$(grep '^VITE_GOOGLE_BOOKS_API_KEY=' FE/.env 2>/dev/null | cut -d= -f2-)}"
+VITE_STRAPI_URL="${VITE_STRAPI_URL:-$(grep '^VITE_STRAPI_URL=' FE/.env 2>/dev/null | cut -d= -f2-)}"
 
 # Synology DSM does not add docker to PATH for SSH sessions
 NAS_DOCKER="${NAS_DOCKER:-/var/packages/ContainerManager/target/usr/bin/docker}"
@@ -84,6 +85,7 @@ docker build \
 docker build \
   --platform "${NAS_PLATFORM}" \
   --build-arg VITE_GOOGLE_BOOKS_API_KEY="${VITE_GOOGLE_BOOKS_API_KEY}" \
+  --build-arg VITE_STRAPI_URL="${VITE_STRAPI_URL}" \
   --tag "${FRONTEND_IMAGE}" \
   ./FE
 

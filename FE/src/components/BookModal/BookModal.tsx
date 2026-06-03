@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client/react'
 import {
   Close as DialogClose,
   Content as DialogContent,
@@ -7,9 +8,7 @@ import {
   Root as DialogRoot,
   Title as DialogTitle,
 } from '@radix-ui/react-dialog'
-import { useQuery } from '@apollo/client/react'
-import { AlertTriangle } from 'lucide-react'
-import { X } from 'lucide-react'
+import { AlertTriangle, X } from 'lucide-react'
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 import { MyBooksListDocument, MyWishlistListDocument } from '../../api/generated/graphql'
@@ -32,8 +31,12 @@ export const BookModal: FC<BookModalProps> = ({ onAdd, open, onClose, book, mode
   const isWishlist = mode === Mode.WISHLIST
   const [currentTitle, setCurrentTitle] = useState('')
 
-  const { data: booksData } = useQuery(MyBooksListDocument, { fetchPolicy: 'cache-only' })
-  const { data: wishlistData } = useQuery(MyWishlistListDocument, { fetchPolicy: 'cache-only' })
+  const { data: booksData } = useQuery(MyBooksListDocument, {
+    fetchPolicy: 'cache-only',
+  })
+  const { data: wishlistData } = useQuery(MyWishlistListDocument, {
+    fetchPolicy: 'cache-only',
+  })
 
   const duplicateIn = useMemo(() => {
     if (!currentTitle.trim() || book) return null

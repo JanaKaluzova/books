@@ -118,12 +118,19 @@
 }
 
 @keyframes shimmer {
-  100% { transform: translateX(200%); }
+  100% {
+    transform: translateX(200%);
+  }
 }
 
 @keyframes scan {
-  0%, 100% { top: 0%; }
-  50% { top: 100%; }
+  0%,
+  100% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
 }
 
 /* Scrollbar styling */

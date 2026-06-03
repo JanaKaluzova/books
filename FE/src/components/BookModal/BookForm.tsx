@@ -7,13 +7,14 @@ import { MONTHS } from '../../utils/const'
 import { bookFormSchema } from '../../utils/formValidation'
 import { yearOptions } from '../../utils/options'
 import { type Book, type BookFormValues, type BookSearchResult, Mode } from '../../utils/types'
-import { Button } from '../ui/Button'
 import { RHFAutocomplete } from '../RHF/RHFAutocomplete'
 import { RHFMonthYearPicker } from '../RHF/RHFMonthYearPicker'
 import { RHFRating } from '../RHF/RHFRating'
 import { RHFSelect } from '../RHF/RHFSelect'
 import { RHFTextArea } from '../RHF/RHFTextArea'
 import { RHFTextField } from '../RHF/RHFTextField'
+import { Button } from '../ui/Button'
+import { CoverUpload } from './CoverUpload'
 import { ISBNScanner } from './ISBNScanner'
 
 const now = new Date()
@@ -104,11 +105,7 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode, onTitleChang
             <RHFTextField name="author" label="Author *" placeholder="Author name" />
           </div>
 
-          <RHFTextField
-            name="coverUrl"
-            label="Cover URL"
-            placeholder="https://example.com/cover.jpg"
-          />
+          <CoverUpload />
 
           <div className="grid grid-cols-3 gap-4">
             <RHFTextField name="genre" label="Genre *" placeholder="e.g. Sci-Fi" />

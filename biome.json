@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "./FE/biome.json"
+  ]
+}

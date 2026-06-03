@@ -113,11 +113,7 @@ export const Autocomplete: FC<AutocompleteProps> = ({
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => handleSelect(result)}
           onMouseEnter={() => setActiveIndex(i)}
-          className={`w-full text-left px-4 py-2.5 transition-colors ${
-            i === activeIndex
-              ? 'bg-accent-500/10 text-accent-600'
-              : 'text-text-primary hover:bg-surface-50'
-          }`}
+          className={`w-full text-left px-4 py-2.5 transition-colors ${i === activeIndex ? 'bg-accent-500/10 text-accent-600' : 'text-text-primary hover:bg-surface-50'}`}
         >
           <p className="text-sm font-medium truncate">{result.title}</p>
           <p className="text-xs text-text-secondary truncate">
