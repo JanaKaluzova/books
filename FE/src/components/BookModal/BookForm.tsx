@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ScanLine } from 'lucide-react'
-import { type FC, useMemo, useState } from 'react'
+import { type FC, useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useFormInitialValues } from '../../hooks/useFormInitialValues'
 import { MONTHS } from '../../utils/const'
@@ -35,9 +35,10 @@ interface BookFormProps {
   onSubmit: (values: BookFormValues) => void
   book?: Book
   mode: Mode
+  onTitleChange?: (title: string) => void
 }
 
-export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
+export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode, onTitleChange }) => {
   const isNotWishlist = mode === Mode.MY_BOOKS
   const [showScanner, setShowScanner] = useState(false)
 
@@ -56,6 +57,7 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
     formMethods.setValue('year', result.year)
     formMethods.setValue('pages', result.pages)
     formMethods.setValue('description', result.description)
+    formMethods.trigger()
   }
 
   const handleIsbnFound = (result: BookSearchResult) => {
@@ -65,6 +67,11 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
   }
 
   useFormInitialValues(mapValues(book), formMethods.reset)
+
+  const title = formMethods.watch('title')
+  useEffect(() => {
+    onTitleChange?.(title ?? '')
+  }, [title, onTitleChange])
 
   return (
     <FormProvider {...formMethods}>
