@@ -9,7 +9,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, error, className = '', ...props }, ref) => {
     return (
-      <div>
+      <div className="flex h-full flex-col">
         {label && (
           <label
             htmlFor={props.name}
@@ -21,7 +21,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         <textarea
           ref={ref}
           id={props.name}
-          className={`${INPUT} resize-none ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${className}`}
+          className={`${INPUT} h-full min-h-20 resize-none ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''} ${className}`}
           {...props}
         />
       </div>

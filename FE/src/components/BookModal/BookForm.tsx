@@ -74,9 +74,9 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
       <form
         id="bookForm"
         onSubmit={formMethods.handleSubmit(onSubmit)}
-        className="flex flex-col overflow-y-auto px-6 py-5"
+        className="flex flex-1 flex-col overflow-y-auto px-6 py-5"
       >
-        <div className="space-y-4">
+        <div className="flex flex-1 flex-col gap-4">
           {!book && (
             <Button
               type="button"
@@ -117,12 +117,13 @@ export const BookForm: FC<BookFormProps> = ({ onSubmit, book, mode }) => {
           )}
 
           {isNotWishlist && (
-            <RHFTextArea
-              name="description"
-              label="Description"
-              rows={3}
-              placeholder="What is this book about?"
-            />
+            <div className="flex flex-1 flex-col">
+              <RHFTextArea
+                name="description"
+                label="Description"
+                placeholder="What is this book about?"
+              />
+            </div>
           )}
         </div>
       </form>

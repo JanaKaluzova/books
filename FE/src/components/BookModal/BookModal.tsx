@@ -54,8 +54,8 @@ export const BookModal: FC<BookModalProps> = ({ onAdd, open, onClose, book, mode
     <DialogRoot open={open} onOpenChange={onClose}>
       <DialogPortal>
         <DialogOverlay className={MODAL_BACKDROP} />
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-8 sm:pt-4">
-          <DialogContent className="modal-anim relative z-10 flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center sm:justify-center sm:p-4">
+          <DialogContent className="modal-anim relative z-10 flex h-[100dvh] w-full flex-col overflow-hidden bg-white sm:h-auto sm:max-h-[90dvh] sm:max-w-lg sm:rounded-3xl sm:border sm:border-surface-200 sm:shadow-2xl">
             <DialogClose asChild>
               <Button variant="icon" onClick={onClose}>
                 <X className="h-4 w-4" strokeWidth={2.5} />
