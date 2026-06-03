@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
+ARG VITE_GOOGLE_BOOKS_API_KEY
+ENV VITE_GOOGLE_BOOKS_API_KEY=$VITE_GOOGLE_BOOKS_API_KEY
+
 RUN npm run build
 
 # Stage 2: Serve
