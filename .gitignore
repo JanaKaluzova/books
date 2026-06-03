@@ -93,3 +93,6 @@ frontend/.parcel-cache/
 # Misc
 .turbo/
 *.pid
+
+# FE ignore
+FE/.env
