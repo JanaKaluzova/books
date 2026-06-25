@@ -11,5 +11,6 @@ mutation updateBook($documentId: ID!, $data: BookInput!) {
     dateRead
     description
     isWishlist
+    isbn
   }
 }

@@ -51,6 +51,9 @@ services:
     build:
       context: ./FE
       dockerfile: Dockerfile
+      args:
+        VITE_STRAPI_URL: ${VITE_STRAPI_URL}
+        VITE_GOOGLE_BOOKS_API_KEY: ${VITE_GOOGLE_BOOKS_API_KEY}
     restart: unless-stopped
     networks:
       - books-net

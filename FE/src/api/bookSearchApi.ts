@@ -1,28 +1,13 @@
-import type { BookSearchResult } from '../utils/types'
-
-interface GoogleBooksVolume {
-  volumeInfo?: {
-    title?: string
-    authors?: string[]
-    publishedDate?: string
-    pageCount?: number
-    categories?: string[]
-    description?: string
-    imageLinks?: {
-      thumbnail?: string
-      smallThumbnail?: string
-    }
-  }
-}
+import type { BookSearchResult, GoogleBooksVolume } from '../utils/types'
 
 export const searchBookByIsbn = async (isbn: string): Promise<BookSearchResult | null> => {
-  const results = await searchBooks(`isbn:${isbn}`, { printType: undefined })
+  const results = await searchBooks(`isbn:${isbn}`, null)
   return results[0] ?? null
 }
 
 export const searchBooks = async (
   query: string,
-  overrides: { printType?: string } = { printType: 'books' },
+  printType: string | null = 'books',
 ): Promise<BookSearchResult[]> => {
   const apiKey = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY
 
@@ -31,8 +16,8 @@ export const searchBooks = async (
     maxResults: '8',
     key: apiKey,
     fields:
-      'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks))',
-    ...(overrides.printType ? { printType: overrides.printType } : {}),
+      'items(volumeInfo(title,authors,publishedDate,pageCount,categories,description,imageLinks,industryIdentifiers))',
+    ...(printType ? { printType } : {}),
   })
 
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`)
@@ -48,6 +33,9 @@ export const searchBooks = async (
   return data.items.map((item) => {
     const info = item.volumeInfo ?? {}
     const coverUrl = info.imageLinks?.thumbnail ?? info.imageLinks?.smallThumbnail ?? ''
+    const isbn =
+      info.industryIdentifiers?.find((i) => i.type === 'ISBN_13')?.identifier ??
+      info.industryIdentifiers?.find((i) => i.type === 'ISBN_10')?.identifier
 
     return {
       title: info.title ?? '',
@@ -57,6 +45,7 @@ export const searchBooks = async (
       genre: info.categories?.[0] ?? '',
       coverUrl: coverUrl.replace('http://', 'https://'),
       description: info.description ?? '',
+      isbn,
     }
   })
 }

@@ -40,6 +40,10 @@
     },
     "isWishlist": {
       "type": "boolean"
+    },
+    "isbn": {
+      "type": "string",
+      "unique": true
     }
   }
 }

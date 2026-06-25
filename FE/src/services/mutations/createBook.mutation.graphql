@@ -11,5 +11,6 @@ mutation createBook($data: BookInput!) {
     dateRead
     description
     isWishlist
+    isbn
   }
 }

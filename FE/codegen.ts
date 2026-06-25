@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   schema: process.env.VITE_STRAPI_URL
     ? `${process.env.VITE_STRAPI_URL}/graphql`
-    : 'http://localhost:1337/graphql',
+    : 'https://localhost:8443/graphql',
   documents: 'src/**/*.graphql',
   ignoreNoDocuments: true,
   generates: {

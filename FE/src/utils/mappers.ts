@@ -17,4 +17,5 @@ export const mapGqlBook = (b: GqlBook): Book => ({
   pages: b.pages ?? undefined,
   dateRead: b.dateRead ?? '',
   description: b.description ?? '',
+  isbn: b.isbn ?? undefined,
 })

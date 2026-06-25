@@ -1,6 +1,29 @@
 import type { ReactNode } from 'react'
 import type { Path } from './paths'
 
+type ImageLinks = {
+  thumbnail?: string
+  smallThumbnail?: string
+}
+
+type ISBN = {
+  type: string
+  identifier: string
+}
+
+export interface GoogleBooksVolume {
+  volumeInfo?: {
+    title?: string
+    authors?: string[]
+    publishedDate?: string
+    pageCount?: number
+    categories?: string[]
+    description?: string
+    imageLinks?: ImageLinks
+    industryIdentifiers?: ISBN[]
+  }
+}
+
 export interface BookListItem {
   id: string
   title: string
@@ -16,6 +39,7 @@ export interface Book extends BookListItem {
   pages?: number
   dateRead: string
   description: string
+  isbn?: string
 }
 
 export interface NavItem {
@@ -28,11 +52,12 @@ export interface BookSearchResult
   extends Pick<Book, 'title' | 'author' | 'genre' | 'coverUrl' | 'description'> {
   year: string
   pages: string
+  isbn?: string
 }
 
 export interface BookFormValues
   extends Pick<Book, 'title' | 'author' | 'genre' | 'rating'>,
-    Partial<Pick<Book, 'coverUrl' | 'dateRead' | 'description'>> {
+    Partial<Pick<Book, 'coverUrl' | 'dateRead' | 'description' | 'isbn'>> {
   year: string
   pages?: string
 }

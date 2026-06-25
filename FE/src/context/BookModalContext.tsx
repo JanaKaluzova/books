@@ -46,7 +46,10 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
           enqueueSnackbar('Book updated successfully', { variant: 'success' })
           setModal(null)
         },
-        onError: () => enqueueSnackbar('Failed to update book', { variant: 'error' }),
+        onError: (error) =>
+          enqueueSnackbar(error.message ?? 'Failed to update book', {
+            variant: 'error',
+          }),
       })
     } else {
       createBook({
@@ -58,7 +61,10 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
           enqueueSnackbar('Book added successfully', { variant: 'success' })
           setModal(null)
         },
-        onError: () => enqueueSnackbar('Failed to add book', { variant: 'error' }),
+        onError: (error) =>
+          enqueueSnackbar(error.message ?? 'Failed to add book', {
+            variant: 'error',
+          }),
       })
     }
   }
@@ -71,7 +77,7 @@ export const BookModalProvider: FC<PropsWithChildren> = ({ children }) => {
           open
           mode={modal.mode}
           book={modal.book}
-          isPending={isCreating || isUpdating}
+          isPending={isCreating ?? isUpdating}
           onAdd={handleSubmit}
           onClose={() => setModal(null)}
         />

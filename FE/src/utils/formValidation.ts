@@ -10,4 +10,5 @@ export const bookFormSchema = z.object({
   dateRead: z.string().optional().or(z.literal('')),
   description: z.string().optional().or(z.literal('')),
   rating: z.number().min(0).max(5),
+  isbn: z.string().optional(),
 })

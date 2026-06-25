@@ -117,6 +117,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isbn",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pages",
             "description": null,
             "args": [],
@@ -366,6 +378,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isbn",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -543,6 +567,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isbn",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -4183,6 +4219,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4203,6 +4263,18 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "I18NLocaleFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4234,6 +4306,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4271,6 +4355,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "pagination",
                 "description": null,
                 "type": {
@@ -4295,6 +4391,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4338,6 +4446,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4367,6 +4499,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4387,6 +4543,18 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "ReviewWorkflowsWorkflowStageFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4418,6 +4586,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4455,52 +4635,11 @@
                 "deprecationReason": null
               },
               {
-                "name": "pagination",
+                "name": "hasPublishedVersion",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "PaginationArg",
-                  "ofType": null
-                },
-                "defaultValue": "{}",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "sort",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": "[]",
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "ReviewWorkflowsWorkflowStageEntityResponseCollection",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "reviewWorkflowsWorkflows",
-            "description": null,
-            "args": [
-              {
-                "name": "filters",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ReviewWorkflowsWorkflowFiltersInput",
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4532,6 +4671,95 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ReviewWorkflowsWorkflowStageEntityResponseCollection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reviewWorkflowsWorkflows",
+            "description": null,
+            "args": [
+              {
+                "name": "filters",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ReviewWorkflowsWorkflowFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pagination",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PaginationArg",
+                  "ofType": null
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "sort",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4569,6 +4797,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "pagination",
                 "description": null,
                 "type": {
@@ -4593,6 +4833,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4624,6 +4876,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4644,6 +4920,18 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "UploadFileFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4675,6 +4963,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4712,6 +5012,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "pagination",
                 "description": null,
                 "type": {
@@ -4736,6 +5048,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4767,6 +5091,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4787,6 +5135,18 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "UsersPermissionsRoleFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4818,6 +5178,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4855,6 +5227,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "pagination",
                 "description": null,
                 "type": {
@@ -4879,6 +5263,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4910,6 +5306,30 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -4930,6 +5350,18 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "UsersPermissionsUserFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4961,6 +5393,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -4998,6 +5442,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "hasPublishedVersion",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "pagination",
                 "description": null,
                 "type": {
@@ -5022,6 +5478,18 @@
                   }
                 },
                 "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "PublicationStatus",
+                  "ofType": null
+                },
+                "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
