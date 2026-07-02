@@ -4,10 +4,12 @@ import { errors } from '@strapi/utils'
 export default {
   async beforeCreate(event: Event) {
     const { data } = event.params
-    if (!data.isbn) return
+    // Strapi 5 fires beforeCreate for both draft and published rows.
+    // Only check uniqueness for the published row to avoid false positives.
+    if (!data.isbn || !data.publishedAt) return
 
     const existing = await strapi.db.query('api::book.book').findOne({
-      where: { isbn: data.isbn },
+      where: { isbn: data.isbn, publishedAt: { $ne: null } },
     })
 
     if (existing) {
@@ -17,10 +19,10 @@ export default {
 
   async beforeUpdate(event: Event) {
     const { data, where } = event.params
-    if (!data.isbn) return
+    if (!data.isbn || !data.publishedAt) return
 
     const existing = await strapi.db.query('api::book.book').findOne({
-      where: { isbn: data.isbn },
+      where: { isbn: data.isbn, publishedAt: { $ne: null } },
     })
 
     if (existing && existing.id !== where.id) {

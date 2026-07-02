@@ -10,6 +10,22 @@ export const apolloClient = new ApolloClient({
       Book: {
         keyFields: ['documentId'],
       },
+      Query: {
+        fields: {
+          books: {
+            keyArgs: ['filters', 'sort'],
+            merge(
+              existing: unknown[] = [],
+              incoming: unknown[],
+              { args }: { args: Record<string, unknown> | null },
+            ) {
+              const pagination = args?.pagination as { start?: number } | undefined
+              if ((pagination?.start ?? 0) === 0) return incoming
+              return [...existing, ...incoming]
+            },
+          },
+        },
+      },
     },
   }),
   defaultOptions: {

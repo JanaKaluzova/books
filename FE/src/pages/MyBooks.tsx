@@ -1,10 +1,10 @@
 import { useApolloClient, useMutation, useQuery } from '@apollo/client/react'
 import { useSnackbar } from 'notistack'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DeleteBookDocument, MyBooksListDocument } from '../api/generated/graphql'
 import { BookList } from '../components/BookList/BookList'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { parseDateRead } from '../utils/const'
+import { buildBookFilters, PAGE_SIZE } from '../utils/bookFilters'
 import { mapGqlBookListItem } from '../utils/mappers'
 import { Mode } from '../utils/types'
 
@@ -13,8 +13,16 @@ export const MyBooks = () => {
   const client = useApolloClient()
 
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const hasMore = useRef(true)
+  const sentinelRef = useRef<HTMLDivElement>(null)
 
-  const { data, loading } = useQuery(MyBooksListDocument)
+  const filters = useMemo(() => buildBookFilters(false, debouncedSearch), [debouncedSearch])
+
+  const { data, loading, fetchMore } = useQuery(MyBooksListDocument, {
+    variables: { filters, start: 0, limit: PAGE_SIZE },
+  })
+
   const [deleteBook, { loading: isDeletingBook }] = useMutation(DeleteBookDocument)
 
   const books = useMemo(
@@ -22,24 +30,16 @@ export const MyBooks = () => {
     [data?.books],
   )
 
-  //TODO: move the filtering to BE, we would like to use infinite scrolling instead of pagination
-  const filteredBooks = useMemo(() => {
-    const filtered = search.trim()
-      ? books.filter((b) => {
-          const q = search.toLowerCase()
-          return (
-            b.title.toLowerCase().includes(q) ||
-            b.author.toLowerCase().includes(q) ||
-            b.genre.toLowerCase().includes(q)
-          )
-        })
-      : books
-
-    return [...filtered].sort((a, b) => {
-      const dateDiff = parseDateRead(b.dateRead) - parseDateRead(a.dateRead)
-      return dateDiff !== 0 ? dateDiff : a.title.localeCompare(b.title)
+  const loadMore = useCallback(() => {
+    if (loading || !hasMore.current) return
+    fetchMore({
+      variables: { start: books.length, limit: PAGE_SIZE },
+    }).then((result) => {
+      if ((result.data?.books?.length ?? 0) < PAGE_SIZE) {
+        hasMore.current = false
+      }
     })
-  }, [search, books])
+  }, [loading, books.length, fetchMore])
 
   const handleDeleteBook = (id: string) => {
     deleteBook({
@@ -52,6 +52,22 @@ export const MyBooks = () => {
     })
   }
 
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) loadMore()
+    })
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [loadMore])
+
+  useEffect(() => {
+    hasMore.current = true
+    const id = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(id)
+  }, [search])
+
   return (
     <>
       <SearchBar
@@ -59,16 +75,17 @@ export const MyBooks = () => {
         countLabel="in your collection"
         value={search}
         onChange={setSearch}
-        totalBooks={filteredBooks?.length ?? 0}
+        totalBooks={books.length}
       />
       <BookList
-        filteredBooks={filteredBooks ?? []}
+        filteredBooks={books}
         onDeleteBook={handleDeleteBook}
         mode={Mode.MY_BOOKS}
         isLoading={loading}
         isDeleting={isDeletingBook}
         isMovingBook={false}
       />
+      <div ref={sentinelRef} className="h-4" />
     </>
   )
 }

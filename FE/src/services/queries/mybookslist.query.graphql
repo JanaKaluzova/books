@@ -1,5 +1,9 @@
-query myBooksList {
-  books(filters: { isWishlist: { eq: false } }) {
+query myBooksList($filters: BookFiltersInput, $start: Int, $limit: Int) {
+  books(
+    filters: $filters
+    pagination: { start: $start, limit: $limit }
+    sort: ["dateRead:desc", "title:asc"]
+  ) {
     documentId
     title
     author
