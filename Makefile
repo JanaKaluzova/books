@@ -8,6 +8,10 @@ NAS_USER     ?= azul
 NAS_SSH_PORT ?= 22
 NAS_PROJECT_DIR ?= /volume1/docker/books
 
+# Reuse one authenticated SSH connection across all ssh/scp calls
+$(shell mkdir -p $(HOME)/.ssh/control)
+SSH_OPTS = -o ControlMaster=auto -o ControlPath=$(HOME)/.ssh/control/%r@%h:%p -o ControlPersist=10m
+
 .PHONY: help dev dev-down dev-logs build deploy deploy-registry nas-stop nas-restart clean
 
 help: ## Show this help
@@ -50,7 +54,7 @@ deploy-registry: ## Build + deploy to NAS via private Docker registry
 # ── NAS Control ─────────────────────────────────────────────────
 
 nas-stop: ## Stop all containers on NAS
-	ssh -p $(NAS_SSH_PORT) $(NAS_USER)@$(NAS_HOST) \
+	ssh $(SSH_OPTS) -p $(NAS_SSH_PORT) $(NAS_USER)@$(NAS_HOST) \
 		"cd $(NAS_PROJECT_DIR) && /var/packages/ContainerManager/target/usr/bin/docker compose down"
 
 nas-restart: ## Stop containers on NAS, then redeploy
@@ -61,15 +65,15 @@ nas-restart: ## Stop containers on NAS, then redeploy
 
 nas-setup: ## Copy project config files to NAS (first-time setup)
 	@echo "Copying deployment files to $(NAS_HOST)..."
-	ssh -p $(NAS_SSH_PORT) $(NAS_USER)@$(NAS_HOST) \
+	ssh $(SSH_OPTS) -p $(NAS_SSH_PORT) $(NAS_USER)@$(NAS_HOST) \
 		"mkdir -p $(NAS_PROJECT_DIR)/{certs,nginx}"
-	scp -O -P $(NAS_SSH_PORT) docker-compose.prod.yml \
+	scp $(SSH_OPTS) -O -P $(NAS_SSH_PORT) docker-compose.prod.yml \
 		$(NAS_USER)@$(NAS_HOST):$(NAS_PROJECT_DIR)/
-	scp -O -P $(NAS_SSH_PORT) .env \
+	scp $(SSH_OPTS) -O -P $(NAS_SSH_PORT) .env \
 		$(NAS_USER)@$(NAS_HOST):$(NAS_PROJECT_DIR)/
-	scp -O -P $(NAS_SSH_PORT) nginx/nginx.conf \
+	scp $(SSH_OPTS) -O -P $(NAS_SSH_PORT) nginx/nginx.conf \
 		$(NAS_USER)@$(NAS_HOST):$(NAS_PROJECT_DIR)/nginx/
-	scp -O -P $(NAS_SSH_PORT) certs/server.crt certs/server.key \
+	scp $(SSH_OPTS) -O -P $(NAS_SSH_PORT) certs/server.crt certs/server.key \
 		$(NAS_USER)@$(NAS_HOST):$(NAS_PROJECT_DIR)/certs/
 	@echo ""
 	@echo "Done. Now run 'make deploy' to build and push images."

@@ -66,8 +66,23 @@ info()  { echo -e "\033[1;34m==>\033[0m $*"; }
 ok()    { echo -e "\033[1;32m==>\033[0m $*"; }
 err()   { echo -e "\033[1;31m==>\033[0m $*" >&2; }
 
+# SSH connection multiplexing: the first connection authenticates and
+# becomes a master; every later ssh/scp call in this deploy reuses it,
+# so credentials are asked for at most once per deploy.
+SSH_CONTROL_DIR="${HOME}/.ssh/control"
+mkdir -p "${SSH_CONTROL_DIR}"
+SSH_OPTS=(
+  -o ControlMaster=auto
+  -o "ControlPath=${SSH_CONTROL_DIR}/%r@%h:%p"
+  -o ControlPersist=10m
+)
+
 nas_ssh() {
-  ssh -p "${NAS_SSH_PORT}" "${NAS_USER}@${NAS_HOST}" "$@"
+  ssh "${SSH_OPTS[@]}" -p "${NAS_SSH_PORT}" "${NAS_USER}@${NAS_HOST}" "$@"
+}
+
+nas_scp() {
+  scp "${SSH_OPTS[@]}" -O -P "${NAS_SSH_PORT}" "$@"
 }
 
 # Target platform for NAS (override with NAS_PLATFORM env var)
@@ -102,11 +117,11 @@ fi
 nas_sync_config() {
   info "Syncing config files to ${NAS_HOST}..."
   nas_ssh "mkdir -p ${NAS_PROJECT_DIR}/{certs,nginx}"
-  scp -O -P "${NAS_SSH_PORT}" \
+  nas_scp \
     docker-compose.prod.yml \
     .env \
     "${NAS_USER}@${NAS_HOST}:${NAS_PROJECT_DIR}/"
-  scp -O -P "${NAS_SSH_PORT}" \
+  nas_scp \
     nginx/nginx.conf \
     "${NAS_USER}@${NAS_HOST}:${NAS_PROJECT_DIR}/nginx/"
 }
